@@ -1,0 +1,80 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  role      String   @default("MEMBER") // ADMIN, MEMBER
+  createdAt DateTime @default(now())
+
+  assignments     Assignment[]
+  supportedTasks  TaskProgress[]
+}
+
+model Bucket {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String?
+  icon        String?  // Lucide icon name
+  color       String   @default("blue") // blue, green, pink, etc.
+  order       Int      @default(0)
+
+  tasks       TaskDefinition[]
+  assignments Assignment[]
+}
+
+model TaskDefinition {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  content     String
+  bucketId    String   @db.ObjectId
+  order       Int      @default(0)
+  
+  bucket      Bucket   @relation(fields: [bucketId], references: [id])
+  progress    TaskProgress[]
+}
+
+model DailyLog {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  date      String   @unique // YYYY-MM-DD
+  createdAt DateTime @default(now())
+
+  assignments Assignment[]
+}
+
+model Assignment {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  dailyLogId  String   @db.ObjectId
+  bucketId    String   @db.ObjectId
+  userId      String?  @db.ObjectId // Can be null initially if unassigned
+  
+  dailyLog    DailyLog @relation(fields: [dailyLogId], references: [id])
+  bucket      Bucket   @relation(fields: [bucketId], references: [id])
+  user        User?    @relation(fields: [userId], references: [id])
+
+  taskProgress TaskProgress[]
+
+  @@unique([dailyLogId, bucketId])
+}
+
+model TaskProgress {
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  assignmentId     String   @db.ObjectId
+  taskDefinitionId String   @db.ObjectId
+  status           String   @default("PENDING") // PENDING, DONE
+  completedAt      DateTime?
+  
+  // If someone else supported this task
+  supportedByUserId String? @db.ObjectId
+
+  assignment       Assignment     @relation(fields: [assignmentId], references: [id])
+  taskDefinition   TaskDefinition @relation(fields: [taskDefinitionId], references: [id])
+  supportedBy      User?          @relation(fields: [supportedByUserId], references: [id])
+
+  @@unique([assignmentId, taskDefinitionId])
+}
