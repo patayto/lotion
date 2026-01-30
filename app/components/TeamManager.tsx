@@ -12,11 +12,15 @@ export function TeamManager() {
     const { users } = useUser()
     const [open, setOpen] = useState(false)
     const [newName, setNewName] = useState('')
+    const [newEmail, setNewEmail] = useState('')
+    const [newPassword, setNewPassword] = useState('')
 
     const handleCreate = async () => {
-        if (!newName.trim()) return
-        await createUser(newName)
+        if (!newName.trim() || !newEmail.trim() || !newPassword.trim()) return
+        await createUser({ name: newName, email: newEmail, password: newPassword })
         setNewName('')
+        setNewEmail('')
+        setNewPassword('')
     }
 
     return (
@@ -32,18 +36,27 @@ export function TeamManager() {
                     <DialogTitle>Manage Team Members</DialogTitle>
                 </DialogHeader>
                 <div className="grid gap-4 py-4">
-                    <div className="flex items-center gap-2">
+                    <div className="grid gap-2">
                         <Input
-                            placeholder="Add new team member..."
+                            placeholder="Name"
                             value={newName}
                             onChange={(e) => setNewName(e.target.value)}
-                            onKeyDown={(e) => {
-                                if (e.key === 'Enter') handleCreate()
-                            }}
                         />
-                        <Button onClick={handleCreate} size="sm">Add</Button>
+                        <Input
+                            placeholder="Email"
+                            type="email"
+                            value={newEmail}
+                            onChange={(e) => setNewEmail(e.target.value)}
+                        />
+                        <Input
+                            placeholder="Password"
+                            type="password"
+                            value={newPassword}
+                            onChange={(e) => setNewPassword(e.target.value)}
+                        />
+                        <Button onClick={handleCreate} disabled={!newName || !newEmail || !newPassword}>Add Member</Button>
                     </div>
-                    <div className="space-y-2 max-h-[300px] overflow-y-auto pr-1">
+                    <div className="space-y-2 max-h-[300px] overflow-y-auto pr-1 mt-4">
                         {users.map(user => (
                             <TeamMemberRow key={user.id} user={user} />
                         ))}

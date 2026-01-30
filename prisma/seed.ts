@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client'
+import bcrypt from 'bcryptjs'
 
 const prisma = new PrismaClient()
 
@@ -44,12 +45,14 @@ async function main() {
   }
 
   // 3. Create Users
+  const password = await bcrypt.hash('password123', 10)
+
   await prisma.user.createMany({
     data: [
-      { name: 'Alice', role: 'MEMBER' },
-      { name: 'Bob', role: 'MEMBER' },
-      { name: 'Charlie', role: 'MEMBER' },
-      { name: 'Diana', role: 'MEMBER' },
+      { name: 'Alice', email: 'alice@lotion.so', password, role: 'MEMBER' },
+      { name: 'Bob', email: 'bob@lotion.so', password, role: 'MEMBER' },
+      { name: 'Charlie', email: 'charlie@lotion.so', password, role: 'MEMBER' },
+      { name: 'Diana', email: 'diana@lotion.so', password, role: 'MEMBER' },
     ]
   })
 

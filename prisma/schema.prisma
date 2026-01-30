@@ -3,13 +3,15 @@ generator client {
 }
 
 datasource db {
-  provider = "mongodb"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  id        String   @id @default(cuid())
   name      String
+  email     String   @unique
+  password  String
   role      String   @default("MEMBER") // ADMIN, MEMBER
   createdAt DateTime @default(now())
 
@@ -18,7 +20,7 @@ model User {
 }
 
 model Bucket {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  id          String   @id @default(cuid())
   title       String
   description String?
   icon        String?  // Lucide icon name
@@ -30,17 +32,17 @@ model Bucket {
 }
 
 model TaskDefinition {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  id          String   @id @default(cuid())
   content     String
-  bucketId    String   @db.ObjectId
+  bucketId    String
   order       Int      @default(0)
-  
+
   bucket      Bucket   @relation(fields: [bucketId], references: [id])
   progress    TaskProgress[]
 }
 
 model DailyLog {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  id        String   @id @default(cuid())
   date      String   @unique // YYYY-MM-DD
   createdAt DateTime @default(now())
 
@@ -48,11 +50,11 @@ model DailyLog {
 }
 
 model Assignment {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  dailyLogId  String   @db.ObjectId
-  bucketId    String   @db.ObjectId
-  userId      String?  @db.ObjectId // Can be null initially if unassigned
-  
+  id          String   @id @default(cuid())
+  dailyLogId  String
+  bucketId    String
+  userId      String? // Can be null initially if unassigned
+
   dailyLog    DailyLog @relation(fields: [dailyLogId], references: [id])
   bucket      Bucket   @relation(fields: [bucketId], references: [id])
   user        User?    @relation(fields: [userId], references: [id])
@@ -63,14 +65,14 @@ model Assignment {
 }
 
 model TaskProgress {
-  id               String   @id @default(auto()) @map("_id") @db.ObjectId
-  assignmentId     String   @db.ObjectId
-  taskDefinitionId String   @db.ObjectId
+  id               String   @id @default(cuid())
+  assignmentId     String
+  taskDefinitionId String
   status           String   @default("PENDING") // PENDING, DONE
   completedAt      DateTime?
-  
+
   // If someone else supported this task
-  supportedByUserId String? @db.ObjectId
+  supportedByUserId String?
 
   assignment       Assignment     @relation(fields: [assignmentId], references: [id])
   taskDefinition   TaskDefinition @relation(fields: [taskDefinitionId], references: [id])

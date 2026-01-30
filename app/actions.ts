@@ -1,9 +1,9 @@
 'use server'
 
-import { PrismaClient } from '@prisma/client'
+import { prisma } from '@/lib/prisma'
 import { revalidatePath } from 'next/cache'
-
-const prisma = new PrismaClient()
+import { auth } from '../auth'
+import bcrypt from 'bcryptjs'
 
 // Ensure we have a DailyLog for the specific date
 async function ensureDailyLog(date: string) {
@@ -19,6 +19,9 @@ async function ensureDailyLog(date: string) {
 }
 
 export async function getDailyState(date: string) {
+    const session = await auth()
+    if (!session?.user) throw new Error('Unauthorized')
+
     const dailyLog = await ensureDailyLog(date)
 
     // Get all buckets
@@ -87,6 +90,9 @@ export async function getDailyState(date: string) {
 }
 
 export async function assignBucket(bucketId: string, userId: string, date: string) {
+    const session = await auth()
+    if (!session?.user) throw new Error('Unauthorized')
+
     const dailyLog = await ensureDailyLog(date)
 
     const existing = await prisma.assignment.findUnique({
@@ -122,6 +128,9 @@ export async function toggleTask(
     isDone: boolean,
     supporterId?: string
 ) {
+    const session = await auth()
+    if (!session?.user) throw new Error('Unauthorized')
+
     // Check if progress entry exists
     const existing = await prisma.taskProgress.findUnique({
         where: {
@@ -158,6 +167,9 @@ export async function toggleTask(
 
 // Phase 2: Edit actions
 export async function updateBucket(bucketId: string, title: string) {
+    const session = await auth()
+    if (!session?.user) throw new Error('Unauthorized')
+
     await prisma.bucket.update({
         where: { id: bucketId },
         data: { title }
@@ -166,6 +178,9 @@ export async function updateBucket(bucketId: string, title: string) {
 }
 
 export async function createTaskDefinition(bucketId: string, content: string) {
+    const session = await auth()
+    if (!session?.user) throw new Error('Unauthorized')
+
     // Get max order
     const lastTask = await prisma.taskDefinition.findFirst({
         where: { bucketId },
@@ -184,6 +199,9 @@ export async function createTaskDefinition(bucketId: string, content: string) {
 }
 
 export async function updateTaskDefinition(taskId: string, content: string) {
+    const session = await auth()
+    if (!session?.user) throw new Error('Unauthorized')
+
     await prisma.taskDefinition.update({
         where: { id: taskId },
         data: { content }
@@ -192,6 +210,9 @@ export async function updateTaskDefinition(taskId: string, content: string) {
 }
 
 export async function deleteTaskDefinition(taskId: string) {
+    const session = await auth()
+    if (!session?.user) throw new Error('Unauthorized')
+
     // Clean up valid progress first
     await prisma.taskProgress.deleteMany({
         where: { taskDefinitionId: taskId }
@@ -204,14 +225,30 @@ export async function deleteTaskDefinition(taskId: string) {
 }
 
 // Phase 3: User Management
-export async function createUser(name: string) {
+export async function createUser(data: { name: string, email: string, password: string }) {
+    const session = await auth()
+    if (!session?.user) throw new Error('Unauthorized')
+
+    // In a real app we'd validate permissions here (only admin can create?)
+    // For now, any authenticated user can add a team member (as per original simple design)
+
+    const hashedPassword = await bcrypt.hash(data.password, 10)
+
     await prisma.user.create({
-        data: { name, role: 'MEMBER' }
+        data: {
+            name: data.name,
+            email: data.email,
+            password: hashedPassword,
+            role: 'MEMBER'
+        }
     })
     revalidatePath('/')
 }
 
 export async function updateUser(id: string, name: string) {
+    const session = await auth()
+    if (!session?.user) throw new Error('Unauthorized')
+
     await prisma.user.update({
         where: { id },
         data: { name }
@@ -220,6 +257,9 @@ export async function updateUser(id: string, name: string) {
 }
 
 export async function deleteUser(id: string) {
+    const session = await auth()
+    if (!session?.user) throw new Error('Unauthorized')
+
     // Unassign pending assignments
     await prisma.assignment.updateMany({
         where: { userId: id },

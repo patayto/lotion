@@ -1,0 +1,453 @@
+{
+  "users": [
+    {
+      "id": "c0bd600d-594a-465e-9ffe-03cc33517a18",
+      "name": "Marilia",
+      "role": "MEMBER",
+      "createdAt": 1769640081155
+    },
+    {
+      "id": "99e88cc6-cfcb-47a8-abbe-47000fcda417",
+      "name": "Oleksandra",
+      "role": "MEMBER",
+      "createdAt": 1769640087516
+    },
+    {
+      "id": "a73c752b-e537-41f9-b6a9-77392b64975a",
+      "name": "Valentina",
+      "role": "MEMBER",
+      "createdAt": 1769640089737
+    },
+    {
+      "id": "d62af0c7-2875-43ea-b326-f4e4516184d4",
+      "name": "Candice",
+      "role": "MEMBER",
+      "createdAt": 1769640115124
+    },
+    {
+      "id": "d612249c-0f98-4d04-8eb2-b5807304f01f",
+      "name": "Lorna",
+      "role": "MEMBER",
+      "createdAt": 1769640117691
+    },
+    {
+      "id": "71d5ab68-08f6-4492-b0e9-89c00f5d1971",
+      "name": "Mica",
+      "role": "MEMBER",
+      "createdAt": 1769640130203
+    },
+    {
+      "id": "1746e721-ef9e-436d-b197-5f7626882499",
+      "name": "Leslie",
+      "role": "MEMBER",
+      "createdAt": 1769640141986
+    },
+    {
+      "id": "1eebc9d1-7afe-4c7d-b0f6-f06eafafb1ef",
+      "name": "Sakura",
+      "role": "MEMBER",
+      "createdAt": 1769640146217
+    }
+  ],
+  "buckets": [
+    {
+      "id": "ead5900e-c60f-4b1b-b5d7-488d0233ee46",
+      "title": "Emails 📧 ",
+      "description": "Handling tickets.",
+      "icon": "Headphones",
+      "color": "blue",
+      "order": 1
+    },
+    {
+      "id": "81e39c90-9e1b-4734-a066-6a6a49bf7c35",
+      "title": "Fun bucket 🎈 ",
+      "description": "Reaching out to customers.",
+      "icon": "Megaphone",
+      "color": "green",
+      "order": 2
+    },
+    {
+      "id": "7236f55e-469e-4947-ac54-34cc77ce7973",
+      "title": "Payments 💰 ",
+      "description": "Helping new customers.",
+      "icon": "UserPlus",
+      "color": "purple",
+      "order": 3
+    },
+    {
+      "id": "2075c3a1-7118-41db-820d-e5272b60f54b",
+      "title": "Sitter quality 🌟 ",
+      "description": "Bug replication.",
+      "icon": "Wrench",
+      "color": "orange",
+      "order": 4
+    },
+    {
+      "id": "6d0175b9-d3be-429c-9e20-10578f4a73a6",
+      "title": "Night owl 🦉 ",
+      "description": "Updating FAQ.",
+      "icon": "BookOpen",
+      "color": "pink",
+      "order": 5
+    },
+    {
+      "id": "c667ba5d-2c91-4a87-a0cb-32009b5f1d84",
+      "title": "Approvals 🇵🇭 ",
+      "description": "Meetings, huddles.",
+      "icon": "Users",
+      "color": "teal",
+      "order": 6
+    },
+    {
+      "id": "0c123b10-7a59-4507-87a3-c0ef80156ddf",
+      "title": "Half day (shared) 🪣 ",
+      "description": "Training, courses.",
+      "icon": "GraduationCap",
+      "color": "yellow",
+      "order": 7
+    }
+  ],
+  "taskDefinitions": [
+    {
+      "id": "2b1268c2-7658-4192-afc1-ef6b4bb8d146",
+      "content": "Emails lead ",
+      "bucketId": "ead5900e-c60f-4b1b-b5d7-488d0233ee46",
+      "order": 1
+    },
+    {
+      "id": "afd84be5-6f1e-4403-a0c6-7f139ffb795c",
+      "content": "Negative sit review follow up",
+      "bucketId": "ead5900e-c60f-4b1b-b5d7-488d0233ee46",
+      "order": 2
+    },
+    {
+      "id": "c7e735bb-3ee7-4732-9ff7-950a576bfc42",
+      "content": "Trustpilot",
+      "bucketId": "ead5900e-c60f-4b1b-b5d7-488d0233ee46",
+      "order": 3
+    },
+    {
+      "id": "9d367b01-d261-449c-a63b-6ccbd6dbffbc",
+      "content": "Parent calls ",
+      "bucketId": "81e39c90-9e1b-4734-a066-6a6a49bf7c35",
+      "order": 1
+    },
+    {
+      "id": "394d2c9d-c600-4a80-8bde-991629052858",
+      "content": "Past dues",
+      "bucketId": "81e39c90-9e1b-4734-a066-6a6a49bf7c35",
+      "order": 2
+    },
+    {
+      "id": "7dc94641-3a37-4111-9072-6a7fe2c288e7",
+      "content": "TBA upload (weekly)",
+      "bucketId": "81e39c90-9e1b-4734-a066-6a6a49bf7c35",
+      "order": 3
+    },
+    {
+      "id": "b0d607c5-2904-49a6-ba56-9bd36d19e06e",
+      "content": "Payrun",
+      "bucketId": "7236f55e-469e-4947-ac54-34cc77ce7973",
+      "order": 1
+    },
+    {
+      "id": "e4573056-ca69-4adc-ac28-7bcd3274faad",
+      "content": "Payment emails",
+      "bucketId": "7236f55e-469e-4947-ac54-34cc77ce7973",
+      "order": 2
+    },
+    {
+      "id": "8a02149d-97ce-49e5-8517-7b31dbe60b5f",
+      "content": "Payment chasers",
+      "bucketId": "7236f55e-469e-4947-ac54-34cc77ce7973",
+      "order": 3
+    },
+    {
+      "id": "df481e88-14b6-470e-81e1-c70186e67102",
+      "content": "Bad photo",
+      "bucketId": "2075c3a1-7118-41db-820d-e5272b60f54b",
+      "order": 1
+    },
+    {
+      "id": "68066386-b69e-425d-8b73-8aefbb87add6",
+      "content": "New photo",
+      "bucketId": "2075c3a1-7118-41db-820d-e5272b60f54b",
+      "order": 2
+    },
+    {
+      "id": "f4c39a4a-ae73-45c0-bafa-629ab728cb94",
+      "content": "DBS queue",
+      "bucketId": "2075c3a1-7118-41db-820d-e5272b60f54b",
+      "order": 3
+    },
+    {
+      "id": "428dc80c-36cb-4443-b949-007db1bf339f",
+      "content": "Parent calls",
+      "bucketId": "6d0175b9-d3be-429c-9e20-10578f4a73a6",
+      "order": 1
+    },
+    {
+      "id": "e40d6828-e097-4332-a944-714954de4c8c",
+      "content": "Approvals second stage",
+      "bucketId": "6d0175b9-d3be-429c-9e20-10578f4a73a6",
+      "order": 2
+    },
+    {
+      "id": "22fe52be-8859-4616-b232-b028d455c009",
+      "content": "CSAT follow up",
+      "bucketId": "6d0175b9-d3be-429c-9e20-10578f4a73a6",
+      "order": 3
+    },
+    {
+      "id": "d36a2532-bcf1-4333-9295-c2e1c0f07fb9",
+      "content": "Approvals first stage",
+      "bucketId": "c667ba5d-2c91-4a87-a0cb-32009b5f1d84",
+      "order": 1
+    },
+    {
+      "id": "9c5b3928-be3b-499f-a668-7fad2a9ddcf0",
+      "content": "Sitter onboarding inbox",
+      "bucketId": "c667ba5d-2c91-4a87-a0cb-32009b5f1d84",
+      "order": 2
+    },
+    {
+      "id": "b4bb1b97-f0f3-40f5-81cf-b2203fccbfe6",
+      "content": "Escalate critical issues",
+      "bucketId": "c667ba5d-2c91-4a87-a0cb-32009b5f1d84",
+      "order": 3
+    },
+    {
+      "id": "966e876d-acd5-4988-a72a-b44bcf4fb45f",
+      "content": "Rebooks",
+      "bucketId": "0c123b10-7a59-4507-87a3-c0ef80156ddf",
+      "order": 1
+    },
+    {
+      "id": "1e410658-7f09-4f71-a150-5c6cd5cc833a",
+      "content": "POIs",
+      "bucketId": "0c123b10-7a59-4507-87a3-c0ef80156ddf",
+      "order": 2
+    },
+    {
+      "id": "9b5ad418-812b-4bee-9d46-e61c95c80d11",
+      "content": "DBS emails",
+      "bucketId": "0c123b10-7a59-4507-87a3-c0ef80156ddf",
+      "order": 3
+    },
+    {
+      "id": "098aa76c-97ee-471d-8ad0-dc4292665c62",
+      "content": "App Stores",
+      "bucketId": "ead5900e-c60f-4b1b-b5d7-488d0233ee46",
+      "order": 4
+    },
+    {
+      "id": "d87c607d-947a-44f9-98ec-dbd132ef4146",
+      "content": "Postcode fraud alert (Slack)",
+      "bucketId": "ead5900e-c60f-4b1b-b5d7-488d0233ee46",
+      "order": 5
+    },
+    {
+      "id": "07d53462-35a5-49ca-94a5-307cade0d7a5",
+      "content": "Reported Users (Slack)",
+      "bucketId": "ead5900e-c60f-4b1b-b5d7-488d0233ee46",
+      "order": 6
+    },
+    {
+      "id": "769270d5-c90c-4e66-bbdb-202b960768b9",
+      "content": "Safety Reports (Slack)",
+      "bucketId": "ead5900e-c60f-4b1b-b5d7-488d0233ee46",
+      "order": 7
+    },
+    {
+      "id": "951fc2fd-05f8-4245-bb38-9d9992702739",
+      "content": "Proactive calls",
+      "bucketId": "ead5900e-c60f-4b1b-b5d7-488d0233ee46",
+      "order": 8
+    },
+    {
+      "id": "8b90e2d2-e36f-499f-8c65-792fce820c1f",
+      "content": "Chargebacks (Braintree)",
+      "bucketId": "7236f55e-469e-4947-ac54-34cc77ce7973",
+      "order": 4
+    },
+    {
+      "id": "49fa86c7-17c4-4e93-934d-8cb856dc7639",
+      "content": "Payment fraud alerts (Slack)",
+      "bucketId": "7236f55e-469e-4947-ac54-34cc77ce7973",
+      "order": 5
+    },
+    {
+      "id": "11d6e3d7-e8ed-4f8e-b08a-d810abe5a7e6",
+      "content": "Proactive calls",
+      "bucketId": "7236f55e-469e-4947-ac54-34cc77ce7973",
+      "order": 6
+    },
+    {
+      "id": "45bf2ea0-909f-4159-a2c0-e331a6ffc87f",
+      "content": "Profile Videos",
+      "bucketId": "2075c3a1-7118-41db-820d-e5272b60f54b",
+      "order": 4
+    },
+    {
+      "id": "b6adda75-0560-461a-bbfa-9f66e735179c",
+      "content": "Bad bio alerts in slack",
+      "bucketId": "2075c3a1-7118-41db-820d-e5272b60f54b",
+      "order": 5
+    },
+    {
+      "id": "a7b89450-8b2d-4ff7-be75-5d7807d15f98",
+      "content": "DBS calls",
+      "bucketId": "2075c3a1-7118-41db-820d-e5272b60f54b",
+      "order": 6
+    },
+    {
+      "id": "3a224700-5c46-45f0-8de8-348d8e3877e3",
+      "content": "Leakage emails",
+      "bucketId": "2075c3a1-7118-41db-820d-e5272b60f54b",
+      "order": 7
+    },
+    {
+      "id": "ef6bb3fc-baf0-4916-992e-8473da05d79c",
+      "content": "Leakage alerts",
+      "bucketId": "2075c3a1-7118-41db-820d-e5272b60f54b",
+      "order": 8
+    },
+    {
+      "id": "e8b9691e-8a07-4822-a3d8-5ed867585662",
+      "content": "Cancellations (sheet)",
+      "bucketId": "2075c3a1-7118-41db-820d-e5272b60f54b",
+      "order": 9
+    },
+    {
+      "id": "81ba9928-b290-4f32-b207-6a3ff1bf7107",
+      "content": "Cancellations emails",
+      "bucketId": "2075c3a1-7118-41db-820d-e5272b60f54b",
+      "order": 10
+    },
+    {
+      "id": "1e6f9cba-6b6b-447b-b43a-2594b45cc0d4",
+      "content": "Parent calls",
+      "bucketId": "2075c3a1-7118-41db-820d-e5272b60f54b",
+      "order": 11
+    },
+    {
+      "id": "902659a2-08ce-4a48-84cc-ca647c63b6f7",
+      "content": "Comply advantage",
+      "bucketId": "6d0175b9-d3be-429c-9e20-10578f4a73a6",
+      "order": 4
+    },
+    {
+      "id": "ff977ab3-1d02-49af-b576-9523680827f5",
+      "content": "Postcodefraud alert (Slack)",
+      "bucketId": "6d0175b9-d3be-429c-9e20-10578f4a73a6",
+      "order": 5
+    },
+    {
+      "id": "e8b716ab-ba6f-4901-b507-a63084002500",
+      "content": "Keep-it-on-platform alerts (Slack)",
+      "bucketId": "6d0175b9-d3be-429c-9e20-10578f4a73a6",
+      "order": 6
+    },
+    {
+      "id": "ebb07ef3-7e3b-4a7c-92d4-b2672af08255",
+      "content": "Reported Users (Slack)",
+      "bucketId": "6d0175b9-d3be-429c-9e20-10578f4a73a6",
+      "order": 7
+    },
+    {
+      "id": "2fdc53fa-62c0-4aa1-a11c-9978b1275ecd",
+      "content": "Safety Reports (Slack)",
+      "bucketId": "6d0175b9-d3be-429c-9e20-10578f4a73a6",
+      "order": 8
+    },
+    {
+      "id": "3d180218-e2d6-40e4-9d1c-0abd3d548317",
+      "content": "Live Chat",
+      "bucketId": "0c123b10-7a59-4507-87a3-c0ef80156ddf",
+      "order": 4
+    },
+    {
+      "id": "22291489-e977-41db-8056-d37ce9026ad3",
+      "content": "Uber drivers list (approved drivers)",
+      "bucketId": "0c123b10-7a59-4507-87a3-c0ef80156ddf",
+      "order": 5
+    },
+    {
+      "id": "cdb20c94-1e59-4012-98a7-1fa0ac51ec7b",
+      "content": "NI jobs",
+      "bucketId": "0c123b10-7a59-4507-87a3-c0ef80156ddf",
+      "order": 6
+    },
+    {
+      "id": "fa6fcbca-06bf-49db-883f-fd8552d492f9",
+      "content": "Bubble concierge",
+      "bucketId": "0c123b10-7a59-4507-87a3-c0ef80156ddf",
+      "order": 7
+    },
+    {
+      "id": "8d914045-26e8-443f-a39f-cc930dfc7324",
+      "content": "Slack alerts",
+      "bucketId": "0c123b10-7a59-4507-87a3-c0ef80156ddf",
+      "order": 8
+    }
+  ],
+  "dailyLogs": [
+    {
+      "id": "d74a46ab-0456-419c-93fd-bea7af197d1d",
+      "date": "2026-01-28",
+      "createdAt": 1769638993593
+    },
+    {
+      "id": "6b3d6a1d-5747-4b0d-83c9-bd2e07c5fbaf",
+      "date": "2026-01-29",
+      "createdAt": 1769695415350
+    }
+  ],
+  "assignments": [
+    {
+      "id": "abef95a6-8a60-4c0e-abe5-a932a1459071",
+      "dailyLogId": "d74a46ab-0456-419c-93fd-bea7af197d1d",
+      "bucketId": "ead5900e-c60f-4b1b-b5d7-488d0233ee46",
+      "userId": "d62af0c7-2875-43ea-b326-f4e4516184d4"
+    },
+    {
+      "id": "c13f7167-76df-4d91-a798-8c5f752975ee",
+      "dailyLogId": "d74a46ab-0456-419c-93fd-bea7af197d1d",
+      "bucketId": "c667ba5d-2c91-4a87-a0cb-32009b5f1d84",
+      "userId": "1eebc9d1-7afe-4c7d-b0f6-f06eafafb1ef"
+    },
+    {
+      "id": "111f1823-46ce-4662-9b39-247d66aa403c",
+      "dailyLogId": "d74a46ab-0456-419c-93fd-bea7af197d1d",
+      "bucketId": "81e39c90-9e1b-4734-a066-6a6a49bf7c35",
+      "userId": null
+    },
+    {
+      "id": "182d9a3f-20cb-457c-8e56-c15a735e5f98",
+      "dailyLogId": "d74a46ab-0456-419c-93fd-bea7af197d1d",
+      "bucketId": "7236f55e-469e-4947-ac54-34cc77ce7973",
+      "userId": "99e88cc6-cfcb-47a8-abbe-47000fcda417"
+    },
+    {
+      "id": "dbc8e9d8-15e6-4afc-a0fb-7f9d4d937da9",
+      "dailyLogId": "d74a46ab-0456-419c-93fd-bea7af197d1d",
+      "bucketId": "0c123b10-7a59-4507-87a3-c0ef80156ddf",
+      "userId": "1746e721-ef9e-436d-b197-5f7626882499"
+    },
+    {
+      "id": "c935f1c7-777d-4f50-b00e-85fe607c734b",
+      "dailyLogId": "d74a46ab-0456-419c-93fd-bea7af197d1d",
+      "bucketId": "6d0175b9-d3be-429c-9e20-10578f4a73a6",
+      "userId": "a73c752b-e537-41f9-b6a9-77392b64975a"
+    },
+    {
+      "id": "8750a12c-5317-41a0-8fa2-f313c15f6b85",
+      "dailyLogId": "6b3d6a1d-5747-4b0d-83c9-bd2e07c5fbaf",
+      "bucketId": "ead5900e-c60f-4b1b-b5d7-488d0233ee46",
+      "userId": "d612249c-0f98-4d04-8eb2-b5807304f01f"
+    }
+  ],
+  "taskProgress": [],
+  "exportedAt": "2026-01-29T17:06:18.290Z",
+  "version": "1.0"
+}
