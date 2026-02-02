@@ -101,11 +101,21 @@ export function BucketCard({ bucket, assignment, users, missedTaskIds = [], date
                         </CardTitle>
                     </div>
                     {assignee ? (
-                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <div className="group flex items-center gap-1 text-sm text-muted-foreground">
                             <Avatar className="h-6 w-6">
                                 <AvatarFallback>{assignee.name.substring(0, 2)}</AvatarFallback>
                             </Avatar>
                             <span>{assignee.name}</span>
+                            <button
+                                onClick={(e) => {
+                                    e.stopPropagation()
+                                    assignBucket(bucket.id, "", date)
+                                }}
+                                className="opacity-0 group-hover:opacity-100 transition-opacity ml-1 h-4 w-4 rounded-full hover:bg-red-100 flex items-center justify-center text-red-500 hover:text-red-700"
+                                title="Unassign"
+                            >
+                                <Icon name="X" className="h-3 w-3" />
+                            </button>
                         </div>
                     ) : (
                         <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded-full">Unassigned</span>
