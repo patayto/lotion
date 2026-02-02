@@ -3,20 +3,31 @@
 import { UserProvider } from './UserContext'
 import { UserSwitcher } from './UserSwitcher'
 import { EditProvider, EditToggle } from './EditComponents'
+import { createContext, useContext } from 'react'
+
+const CurrentUserRoleContext = createContext<string>('MEMBER')
+
+export function useCurrentUserRole() {
+    return useContext(CurrentUserRoleContext)
+}
 
 export function DashboardClientWrapper({
     children,
-    users
+    users,
+    currentUserRole
 }: {
     children: React.ReactNode,
-    users: any[]
+    users: any[],
+    currentUserRole: string
 }) {
     return (
-        <UserProvider initialUsers={users}>
-            <EditProvider>
-                {children}
-            </EditProvider>
-        </UserProvider>
+        <CurrentUserRoleContext.Provider value={currentUserRole}>
+            <UserProvider initialUsers={users}>
+                <EditProvider>
+                    {children}
+                </EditProvider>
+            </UserProvider>
+        </CurrentUserRoleContext.Provider>
     )
 }
 

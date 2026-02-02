@@ -1,5 +1,4 @@
 import NextAuth from "next-auth"
-import { PrismaAdapter } from "@auth/prisma-adapter"
 import { prisma } from "./lib/prisma"
 import { authConfig } from "./auth.config"
 import Credentials from "next-auth/providers/credentials"
@@ -8,7 +7,6 @@ import { z } from "zod"
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
     ...authConfig,
-    adapter: PrismaAdapter(prisma),
     session: { strategy: "jwt" },
     providers: [
         Credentials({
@@ -21,20 +19,47 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                     .object({ email: z.string().email(), password: z.string().min(6) })
                     .safeParse(credentials)
 
-                if (parsedCredentials.success) {
-                    const { email, password } = parsedCredentials.data
-                    const user = await prisma.user.findUnique({ where: { email } })
-                    if (!user) return null
-
-                    if (!user.password) return null
-
-                    const passwordsMatch = await bcrypt.compare(password, user.password)
-                    if (passwordsMatch) return user
+                if (!parsedCredentials.success) {
+                    return null
                 }
 
-                console.log("Invalid credentials")
+                const { email, password } = parsedCredentials.data
+                const user = await prisma.user.findUnique({ where: { email } })
+
+                if (!user || !user.password) {
+                    return null
+                }
+
+                const passwordsMatch = await bcrypt.compare(password, user.password)
+
+                if (passwordsMatch) {
+                    return user
+                }
+
                 return null
             },
         }),
     ],
+    callbacks: {
+        async jwt({ token, user }) {
+            // Add user data to token on signin
+            if (user) {
+                token.id = user.id
+                token.email = user.email
+                token.name = user.name
+                token.role = user.role
+            }
+            return token
+        },
+        async session({ session, token }) {
+            // Add user data from token to session
+            if (token && session.user) {
+                session.user.id = token.id as string
+                session.user.email = token.email as string
+                session.user.name = token.name as string
+                session.user.role = token.role as string
+            }
+            return session
+        },
+    },
 })

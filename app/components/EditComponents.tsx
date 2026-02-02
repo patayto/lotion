@@ -77,6 +77,7 @@ export function EditTaskControls({ taskId, currentContent, onDelete }: { taskId:
 
     if (!isEditing) return (
         <label
+            htmlFor={taskId}
             className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
         >
             {currentContent}

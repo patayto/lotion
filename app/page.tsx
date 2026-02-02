@@ -13,7 +13,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
   const date = dateParam || today
   const state = await getDailyState(date)
 
-  const { buckets, assignments, users, missedTaskIds } = state
+  const { buckets, assignments, users, missedTaskIds, currentUserRole } = state
 
   // Identify unassigned buckets
   const unassigned = buckets.filter(b => {
@@ -23,7 +23,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
 
   // Group everything for render
   return (
-    <DashboardClientWrapper users={users}>
+    <DashboardClientWrapper users={users} currentUserRole={currentUserRole}>
       <div className="min-h-screen bg-slate-50 pb-20">
         <header className="bg-white border-b px-6 py-4 flex items-center justify-between sticky top-0 z-10">
           <div className="flex items-center gap-4">

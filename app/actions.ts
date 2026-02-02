@@ -86,7 +86,7 @@ export async function getDailyState(date: string) {
         }
     }
 
-    return { dailyLog, buckets, assignments, users, missedTaskIds }
+    return { dailyLog, buckets, assignments, users, missedTaskIds, currentUserRole: session.user.role }
 }
 
 export async function assignBucket(bucketId: string, userId: string, date: string) {
@@ -94,6 +94,9 @@ export async function assignBucket(bucketId: string, userId: string, date: strin
     if (!session?.user) throw new Error('Unauthorized')
 
     const dailyLog = await ensureDailyLog(date)
+
+    // Convert empty string to null for unassignment
+    const userIdValue = userId === '' ? null : userId
 
     const existing = await prisma.assignment.findUnique({
         where: {
@@ -107,14 +110,14 @@ export async function assignBucket(bucketId: string, userId: string, date: strin
     if (existing) {
         await prisma.assignment.update({
             where: { id: existing.id },
-            data: { userId },
+            data: { userId: userIdValue },
         })
     } else {
         await prisma.assignment.create({
             data: {
                 dailyLogId: dailyLog.id,
                 bucketId,
-                userId,
+                userId: userIdValue,
             },
         })
     }
@@ -225,12 +228,14 @@ export async function deleteTaskDefinition(taskId: string) {
 }
 
 // Phase 3: User Management
-export async function createUser(data: { name: string, email: string, password: string }) {
+export async function createUser(data: { name: string, email: string, password: string, role?: string }) {
     const session = await auth()
     if (!session?.user) throw new Error('Unauthorized')
 
-    // In a real app we'd validate permissions here (only admin can create?)
-    // For now, any authenticated user can add a team member (as per original simple design)
+    // Only admins can create users
+    if (session.user.role !== 'ADMIN') {
+        throw new Error('Only administrators can create users')
+    }
 
     const hashedPassword = await bcrypt.hash(data.password, 10)
 
@@ -239,7 +244,7 @@ export async function createUser(data: { name: string, email: string, password: 
             name: data.name,
             email: data.email,
             password: hashedPassword,
-            role: 'MEMBER'
+            role: data.role || 'MEMBER'
         }
     })
     revalidatePath('/')

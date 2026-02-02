@@ -5,22 +5,38 @@ import { Button } from '@/components/ui/button'
 import { Icon } from './Icon'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { createUser, updateUser, deleteUser } from '@/app/actions'
 import { useUser } from './UserContext'
+import { useCurrentUserRole } from './DashboardClientWrapper'
 
 export function TeamManager() {
     const { users } = useUser()
+    const currentUserRole = useCurrentUserRole()
     const [open, setOpen] = useState(false)
     const [newName, setNewName] = useState('')
     const [newEmail, setNewEmail] = useState('')
     const [newPassword, setNewPassword] = useState('')
+    const [newRole, setNewRole] = useState<string>('MEMBER')
+    const [error, setError] = useState('')
+
+    // Only show to admins
+    if (currentUserRole !== 'ADMIN') {
+        return null
+    }
 
     const handleCreate = async () => {
         if (!newName.trim() || !newEmail.trim() || !newPassword.trim()) return
-        await createUser({ name: newName, email: newEmail, password: newPassword })
-        setNewName('')
-        setNewEmail('')
-        setNewPassword('')
+        try {
+            setError('')
+            await createUser({ name: newName, email: newEmail, password: newPassword, role: newRole })
+            setNewName('')
+            setNewEmail('')
+            setNewPassword('')
+            setNewRole('MEMBER')
+        } catch (err) {
+            setError(err instanceof Error ? err.message : 'Failed to create user')
+        }
     }
 
     return (
@@ -54,6 +70,16 @@ export function TeamManager() {
                             value={newPassword}
                             onChange={(e) => setNewPassword(e.target.value)}
                         />
+                        <Select value={newRole} onValueChange={setNewRole}>
+                            <SelectTrigger>
+                                <SelectValue placeholder="Select role" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="MEMBER">Member</SelectItem>
+                                <SelectItem value="ADMIN">Admin</SelectItem>
+                            </SelectContent>
+                        </Select>
+                        {error && <p className="text-sm text-red-500">{error}</p>}
                         <Button onClick={handleCreate} disabled={!newName || !newEmail || !newPassword}>Add Member</Button>
                     </div>
                     <div className="space-y-2 max-h-[300px] overflow-y-auto pr-1 mt-4">
