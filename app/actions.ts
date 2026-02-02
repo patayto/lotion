@@ -64,23 +64,36 @@ export async function getDailyState(date: string) {
     })
 
     const missedTaskIds: string[] = []
-    if (yesterdayLog) {
-        // Logic: If a task was assigned (bucket assigned) but not completed?
-        // Or just check all tasks for all buckets? 
-        // Usually "missed" means it was expected to be done.
-        // Let's assume if the bucket was assigned, all tasks in it were expected.
-        for (const assignment of yesterdayLog.assignments) {
-            if (!assignment.userId) continue // No one assigned, so maybe ignored
+    if (yesterdayLog && yesterdayLog.assignments.length > 0) {
+        // Optimize: Get all bucket tasks in one query instead of N queries
+        const assignedBucketIds = yesterdayLog.assignments
+            .filter(a => a.userId) // Only assigned buckets
+            .map(a => a.bucketId)
 
-            // Get all task definitions for this bucket
-            const bucketTasks = await prisma.taskDefinition.findMany({
-                where: { bucketId: assignment.bucketId }
+        if (assignedBucketIds.length > 0) {
+            const allBucketTasks = await prisma.taskDefinition.findMany({
+                where: { bucketId: { in: assignedBucketIds } }
             })
 
-            for (const task of bucketTasks) {
-                const progress = assignment.taskProgress.find(p => p.taskDefinitionId === task.id)
-                if (!progress || progress.status !== 'DONE') {
-                    missedTaskIds.push(task.id)
+            // Build a map for fast lookup
+            const tasksByBucket = new Map<string, typeof allBucketTasks>()
+            for (const task of allBucketTasks) {
+                if (!tasksByBucket.has(task.bucketId)) {
+                    tasksByBucket.set(task.bucketId, [])
+                }
+                tasksByBucket.get(task.bucketId)!.push(task)
+            }
+
+            // Check each assignment for incomplete tasks
+            for (const assignment of yesterdayLog.assignments) {
+                if (!assignment.userId) continue
+
+                const bucketTasks = tasksByBucket.get(assignment.bucketId) || []
+                for (const task of bucketTasks) {
+                    const progress = assignment.taskProgress.find(p => p.taskDefinitionId === task.id)
+                    if (!progress || progress.status !== 'DONE') {
+                        missedTaskIds.push(task.id)
+                    }
                 }
             }
         }

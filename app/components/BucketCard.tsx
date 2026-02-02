@@ -72,9 +72,13 @@ export function BucketCard({ bucket, assignment, users, missedTaskIds = [], date
     const [loadingTaskId, setLoadingTaskId] = useState<string | null>(null)
     const [isAssigning, setIsAssigning] = useState(false)
 
-    // We can treat unassigned as a special state
-    const isAssigned = !!assignment?.userId
-    const assignee = assignment?.user
+    // Optimistic state: track task completion locally
+    const [optimisticTasks, setOptimisticTasks] = useState<Map<string, boolean>>(new Map())
+    const [optimisticAssignee, setOptimisticAssignee] = useState<User | null | undefined>(undefined)
+
+    // Use optimistic assignee if available, otherwise use server state
+    const assignee = optimisticAssignee !== undefined ? optimisticAssignee : assignment?.user
+    const isAssigned = !!assignee
 
     const baseColor = colorMap[bucket.color] || colorMap.gray
 
@@ -92,28 +96,73 @@ export function BucketCard({ bucket, assignment, users, missedTaskIds = [], date
             supporterId = currentUser.id
         }
 
+        // Optimistic update: immediately update UI
+        setOptimisticTasks(prev => new Map(prev).set(taskId, checked))
         setLoadingTaskId(taskId)
+
         startTransition(async () => {
-            await toggleTask(assignment.id, taskId, checked, supporterId)
-            setLoadingTaskId(null)
+            try {
+                await toggleTask(assignment.id, taskId, checked, supporterId)
+                // Success: keep the optimistic state (it will sync with server on next render)
+            } catch (error) {
+                // Error: revert the optimistic update
+                console.error('Failed to toggle task:', error)
+                setOptimisticTasks(prev => {
+                    const next = new Map(prev)
+                    next.delete(taskId)
+                    return next
+                })
+                alert('Failed to update task. Please try again.')
+            } finally {
+                setLoadingTaskId(null)
+            }
         })
     }
 
     function handleUnassign() {
         if (isAssigning) return // Prevent multiple clicks
+
+        // Optimistic update: immediately unassign
+        setOptimisticAssignee(null)
         setIsAssigning(true)
+
         startTransition(async () => {
-            await assignBucket(bucket.id, "", date)
-            setIsAssigning(false)
+            try {
+                await assignBucket(bucket.id, "", date)
+                // Success: optimistic state will sync with server
+            } catch (error) {
+                // Error: revert to server state
+                console.error('Failed to unassign bucket:', error)
+                setOptimisticAssignee(undefined) // Reset to use server state
+                alert('Failed to unassign bucket. Please try again.')
+            } finally {
+                setIsAssigning(false)
+            }
         })
     }
 
     function handleAssign(userId: string) {
         if (isAssigning) return // Prevent multiple clicks
+
+        // Optimistic update: immediately assign
+        const newAssignee = userId === "unassigned"
+            ? null
+            : users.find(u => u.id === userId) || null
+        setOptimisticAssignee(newAssignee)
         setIsAssigning(true)
+
         startTransition(async () => {
-            await assignBucket(bucket.id, userId === "unassigned" ? "" : userId, date)
-            setIsAssigning(false)
+            try {
+                await assignBucket(bucket.id, userId === "unassigned" ? "" : userId, date)
+                // Success: optimistic state will sync with server
+            } catch (error) {
+                // Error: revert to server state
+                console.error('Failed to assign bucket:', error)
+                setOptimisticAssignee(undefined) // Reset to use server state
+                alert('Failed to assign bucket. Please try again.')
+            } finally {
+                setIsAssigning(false)
+            }
         })
     }
 
@@ -181,9 +230,14 @@ export function BucketCard({ bucket, assignment, users, missedTaskIds = [], date
                 <div className="space-y-3">
                     {bucket.tasks.map(task => {
                         const progress = assignment?.taskProgress.find(p => p.taskDefinitionId === task.id)
-                        const isDone = progress?.status === 'DONE'
-                        const wasMissed = missedTaskIds.includes(task.id)
+                        const serverIsDone = progress?.status === 'DONE'
 
+                        // Use optimistic state if available, otherwise use server state
+                        const isDone = optimisticTasks.has(task.id)
+                            ? optimisticTasks.get(task.id)!
+                            : serverIsDone
+
+                        const wasMissed = missedTaskIds.includes(task.id)
                         const isTaskLoading = loadingTaskId === task.id
 
                         return (
