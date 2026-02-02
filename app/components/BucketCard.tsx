@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useTransition } from 'react'
 import { Icon } from './Icon'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Button } from '@/components/ui/button'
@@ -68,18 +68,23 @@ const colorMap: Record<string, string> = {
 export function BucketCard({ bucket, assignment, users, missedTaskIds = [], date }: BucketCardProps) {
     const { currentUser } = useUser()
     const { isEditing } = useEditMode()
+    const [isPending, startTransition] = useTransition()
+    const [loadingTaskId, setLoadingTaskId] = useState<string | null>(null)
+    const [isAssigning, setIsAssigning] = useState(false)
+
     // We can treat unassigned as a special state
     const isAssigned = !!assignment?.userId
     const assignee = assignment?.user
 
     const baseColor = colorMap[bucket.color] || colorMap.gray
 
-    async function handleToggle(taskId: string, checked: boolean) {
+    function handleToggle(taskId: string, checked: boolean) {
         if (!assignment) return
         if (!currentUser) {
             alert("Please select a user first (top right)")
             return
         }
+        if (loadingTaskId) return // Prevent multiple clicks
 
         // Logic: If I am NOT the assignee, I am supporting
         let supporterId: string | undefined = undefined
@@ -87,7 +92,29 @@ export function BucketCard({ bucket, assignment, users, missedTaskIds = [], date
             supporterId = currentUser.id
         }
 
-        await toggleTask(assignment.id, taskId, checked, supporterId)
+        setLoadingTaskId(taskId)
+        startTransition(async () => {
+            await toggleTask(assignment.id, taskId, checked, supporterId)
+            setLoadingTaskId(null)
+        })
+    }
+
+    function handleUnassign() {
+        if (isAssigning) return // Prevent multiple clicks
+        setIsAssigning(true)
+        startTransition(async () => {
+            await assignBucket(bucket.id, "", date)
+            setIsAssigning(false)
+        })
+    }
+
+    function handleAssign(userId: string) {
+        if (isAssigning) return // Prevent multiple clicks
+        setIsAssigning(true)
+        startTransition(async () => {
+            await assignBucket(bucket.id, userId === "unassigned" ? "" : userId, date)
+            setIsAssigning(false)
+        })
     }
 
     return (
@@ -101,21 +128,26 @@ export function BucketCard({ bucket, assignment, users, missedTaskIds = [], date
                         </CardTitle>
                     </div>
                     {assignee ? (
-                        <div className="group flex items-center gap-1 text-sm text-muted-foreground">
+                        <div className={cn("group flex items-center gap-1 text-sm text-muted-foreground", isAssigning && "opacity-50")}>
                             <Avatar className="h-6 w-6">
                                 <AvatarFallback>{assignee.name.substring(0, 2)}</AvatarFallback>
                             </Avatar>
                             <span>{assignee.name}</span>
-                            <button
-                                onClick={(e) => {
-                                    e.stopPropagation()
-                                    assignBucket(bucket.id, "", date)
-                                }}
-                                className="opacity-0 group-hover:opacity-100 transition-opacity ml-1 h-4 w-4 rounded-full hover:bg-red-100 flex items-center justify-center text-red-500 hover:text-red-700"
-                                title="Unassign"
-                            >
-                                <Icon name="X" className="h-3 w-3" />
-                            </button>
+                            {isAssigning ? (
+                                <Icon name="Loader2" className="h-3 w-3 animate-spin ml-1 text-muted-foreground" />
+                            ) : (
+                                <button
+                                    onClick={(e) => {
+                                        e.stopPropagation()
+                                        handleUnassign()
+                                    }}
+                                    disabled={isAssigning}
+                                    className="opacity-0 group-hover:opacity-100 transition-opacity ml-1 h-4 w-4 rounded-full hover:bg-red-100 flex items-center justify-center text-red-500 hover:text-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                                    title="Unassign"
+                                >
+                                    <Icon name="X" className="h-3 w-3" />
+                                </button>
+                            )}
                         </div>
                     ) : (
                         <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded-full">Unassigned</span>
@@ -125,7 +157,8 @@ export function BucketCard({ bucket, assignment, users, missedTaskIds = [], date
                         <div className="absolute right-2 top-10 bg-white shadow-md rounded p-1 z-10">
                             <Select
                                 value={assignment?.userId || "unassigned"}
-                                onValueChange={(val) => assignBucket(bucket.id, val === "unassigned" ? "" : val, date)}
+                                onValueChange={handleAssign}
+                                disabled={isAssigning}
                             >
                                 <SelectTrigger className="w-[120px] h-7 text-xs">
                                     <SelectValue placeholder="Assign" />
@@ -137,6 +170,9 @@ export function BucketCard({ bucket, assignment, users, missedTaskIds = [], date
                                     ))}
                                 </SelectContent>
                             </Select>
+                            {isAssigning && (
+                                <Icon name="Loader2" className="absolute right-1 top-1 h-3 w-3 animate-spin text-muted-foreground" />
+                            )}
                         </div>
                     )}
                 </div>
@@ -148,15 +184,21 @@ export function BucketCard({ bucket, assignment, users, missedTaskIds = [], date
                         const isDone = progress?.status === 'DONE'
                         const wasMissed = missedTaskIds.includes(task.id)
 
+                        const isTaskLoading = loadingTaskId === task.id
+
                         return (
-                            <div key={task.id} className={cn("flex items-start gap-3 p-2 rounded", wasMissed && !isDone && "bg-red-50 border border-red-100")}>
-                                <Checkbox
-                                    id={task.id}
-                                    checked={isDone}
-                                    className="mt-1"
-                                    disabled={!isAssigned} // Cannot check if unassigned?
-                                    onCheckedChange={(c) => handleToggle(task.id, c as boolean)}
-                                />
+                            <div key={task.id} className={cn("flex items-start gap-3 p-2 rounded transition-opacity", wasMissed && !isDone && "bg-red-50 border border-red-100", isTaskLoading && "opacity-50")}>
+                                <div className="relative mt-1">
+                                    <Checkbox
+                                        id={task.id}
+                                        checked={isDone}
+                                        disabled={!isAssigned || isTaskLoading}
+                                        onCheckedChange={(c) => handleToggle(task.id, c as boolean)}
+                                    />
+                                    {isTaskLoading && (
+                                        <Icon name="Loader2" className="absolute -right-4 top-0 h-3 w-3 animate-spin text-muted-foreground" />
+                                    )}
+                                </div>
                                 <div className="grid gap-0.5 w-full">
                                     <EditTaskControls
                                         taskId={task.id}
