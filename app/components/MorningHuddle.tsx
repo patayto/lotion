@@ -25,7 +25,7 @@ export function MorningHuddle({ unassignedBuckets, users, date }: MorningHuddleP
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                         <Icon name="Sun" className="h-5 w-5 text-orange-500" />
-                        Morning Huddle
+                        Bucket List
                     </CardTitle>
                     <CardDescription>
                         Assign the following buckets to kick off the day.
