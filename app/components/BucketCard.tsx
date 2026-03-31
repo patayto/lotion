@@ -51,6 +51,7 @@ interface BucketCardProps {
     bucketId: string // redundant but clear
     missedTaskIds?: string[]
     date: string
+    isReadOnly?: boolean
 }
 
 // Color Logic
@@ -66,7 +67,7 @@ const colorMap: Record<string, string> = {
     gray: "bg-gray-100 border-gray-300"
 }
 
-export function BucketCard({ bucket, assignment, users, missedTaskIds = [], date }: BucketCardProps) {
+export function BucketCard({ bucket, assignment, users, missedTaskIds = [], date, isReadOnly = false }: BucketCardProps) {
     const { currentUser } = useUser()
     const { isEditing } = useEditMode()
     const [isPending, startTransition] = useTransition()
@@ -84,6 +85,7 @@ export function BucketCard({ bucket, assignment, users, missedTaskIds = [], date
     const baseColor = colorMap[bucket.color] || colorMap.gray
 
     function handleToggle(taskId: string, checked: boolean) {
+        if (isReadOnly) return
         if (!assignment) return
         if (!currentUser) {
             alert("Please select a user first (top right)")
@@ -121,6 +123,7 @@ export function BucketCard({ bucket, assignment, users, missedTaskIds = [], date
     }
 
     function handleUnassign() {
+        if (isReadOnly) return
         if (isAssigning) return // Prevent multiple clicks
 
         // Optimistic update: immediately unassign
@@ -143,6 +146,7 @@ export function BucketCard({ bucket, assignment, users, missedTaskIds = [], date
     }
 
     function handleAssign(userId: string) {
+        if (isReadOnly) return
         if (isAssigning) return // Prevent multiple clicks
 
         // Optimistic update: immediately assign
@@ -176,6 +180,9 @@ export function BucketCard({ bucket, assignment, users, missedTaskIds = [], date
                         <CardTitle className="text-lg">
                             <EditBucketTitle bucketId={bucket.id} currentTitle={bucket.title} />
                         </CardTitle>
+                        {isReadOnly && (
+                            <span className="text-xs text-slate-400 italic">historical</span>
+                        )}
                     </div>
                     {assignee ? (
                         <div className={cn("group flex items-center gap-1 text-sm text-muted-foreground", isAssigning && "opacity-50")}>
@@ -183,27 +190,29 @@ export function BucketCard({ bucket, assignment, users, missedTaskIds = [], date
                                 <AvatarFallback>{assignee.name.substring(0, 2)}</AvatarFallback>
                             </Avatar>
                             <span>{assignee.name}</span>
-                            {isAssigning ? (
-                                <Icon name="Loader2" className="h-3 w-3 animate-spin ml-1 text-muted-foreground" />
-                            ) : (
-                                <button
-                                    onClick={(e) => {
-                                        e.stopPropagation()
-                                        handleUnassign()
-                                    }}
-                                    disabled={isAssigning}
-                                    className="opacity-0 group-hover:opacity-100 transition-opacity ml-1 h-4 w-4 rounded-full hover:bg-red-100 flex items-center justify-center text-red-500 hover:text-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
-                                    title="Unassign"
-                                >
-                                    <Icon name="X" className="h-3 w-3" />
-                                </button>
+                            {!isReadOnly && (
+                                isAssigning ? (
+                                    <Icon name="Loader2" className="h-3 w-3 animate-spin ml-1 text-muted-foreground" />
+                                ) : (
+                                    <button
+                                        onClick={(e) => {
+                                            e.stopPropagation()
+                                            handleUnassign()
+                                        }}
+                                        disabled={isAssigning}
+                                        className="opacity-0 group-hover:opacity-100 transition-opacity ml-1 h-4 w-4 rounded-full hover:bg-red-100 flex items-center justify-center text-red-500 hover:text-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                                        title="Unassign"
+                                    >
+                                        <Icon name="X" className="h-3 w-3" />
+                                    </button>
+                                )
                             )}
                         </div>
                     ) : (
                         <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded-full">Unassigned</span>
                     )}
 
-                    {isEditing && (
+                    {isEditing && !isReadOnly && (
                         <div className="absolute right-2 top-10 bg-white shadow-md rounded p-1 z-10">
                             <Select
                                 value={assignment?.userId || "unassigned"}
@@ -247,7 +256,7 @@ export function BucketCard({ bucket, assignment, users, missedTaskIds = [], date
                                     <Checkbox
                                         id={task.id}
                                         checked={isDone}
-                                        disabled={!isAssigned || isTaskLoading}
+                                        disabled={isReadOnly || !isAssigned || isTaskLoading}
                                         onCheckedChange={(c) => handleToggle(task.id, c as boolean)}
                                     />
                                     {isTaskLoading && (
@@ -275,7 +284,7 @@ export function BucketCard({ bucket, assignment, users, missedTaskIds = [], date
                             </div>
                         )
                     })}
-                    <AddTaskButton bucketId={bucket.id} />
+                    {!isReadOnly && <AddTaskButton bucketId={bucket.id} />}
                 </div>
             </CardContent>
         </Card>

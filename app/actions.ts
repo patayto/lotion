@@ -330,3 +330,20 @@ export async function getTaskHistory(taskDefinitionId: string) {
         orderBy: { createdAt: 'desc' },
     })
 }
+
+export async function getDatesWithData(): Promise<string[]> {
+    const session = await auth()
+    if (!session?.user) throw new Error('Unauthorized')
+
+    const logs = await prisma.dailyLog.findMany({
+        where: {
+            assignments: {
+                some: { userId: { not: null } }
+            }
+        },
+        select: { date: true },
+        orderBy: { date: 'asc' },
+    })
+
+    return logs.map(l => l.date)
+}

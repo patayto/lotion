@@ -1,5 +1,5 @@
 import { Suspense } from 'react'
-import { getDailyState } from '@/app/actions'
+import { getDailyState, getDatesWithData } from '@/app/actions'
 import { MorningHuddle } from './components/MorningHuddle'
 import { BucketCard } from './components/BucketCard'
 import { DashboardClientWrapper, HeaderUserAction } from './components/DashboardClientWrapper'
@@ -11,7 +11,11 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
   const { date: dateParam } = await searchParams
   const today = new Date().toISOString().split('T')[0]
   const date = dateParam || today
-  const state = await getDailyState(date)
+  const isReadOnly = date !== today
+  const [state, datesWithData] = await Promise.all([
+    getDailyState(date),
+    getDatesWithData(),
+  ])
 
   const { buckets, assignments, users, missedTaskIds, currentUserRole } = state
 
@@ -37,7 +41,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
 
           <div className="flex items-center gap-4">
             <Suspense fallback={<div className="w-[200px] h-10 bg-slate-100 rounded" />}>
-              <DateFilter currentDate={date} />
+              <DateFilter currentDate={date} datesWithData={datesWithData} />
             </Suspense>
             <div className="text-sm text-slate-500 font-medium hidden md:block">
               {new Date(date).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
@@ -65,6 +69,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
                   users={users}
                   missedTaskIds={missedTaskIds}
                   date={date}
+                  isReadOnly={isReadOnly}
                 />
               )
             })}

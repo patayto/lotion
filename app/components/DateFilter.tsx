@@ -14,12 +14,23 @@ import {
     PopoverTrigger,
 } from '@/components/ui/popover'
 
-export function DateFilter({ currentDate }: { currentDate: string }) {
+export function DateFilter({ currentDate, datesWithData }: {
+    currentDate: string
+    datesWithData: string[]
+}) {
     const router = useRouter()
 
     // Use the passed prop for the initial state to ensure server/client match
     const [date, setDate] = React.useState<Date | undefined>(
         currentDate ? new Date(currentDate) : new Date()
+    )
+
+    const datesWithDataParsed = React.useMemo(
+        () => datesWithData.map(d => {
+            const [year, month, day] = d.split('-').map(Number)
+            return new Date(year, month - 1, day, 12, 0, 0)
+        }),
+        [datesWithData]
     )
 
     const handleSelect = (newDate: Date | undefined) => {
@@ -55,6 +66,8 @@ export function DateFilter({ currentDate }: { currentDate: string }) {
                     mode="single"
                     selected={date}
                     onSelect={handleSelect}
+                    modifiers={{ hasData: datesWithDataParsed }}
+                    modifiersClassNames={{ hasData: 'day-has-data' }}
                     initialFocus
                 />
             </PopoverContent>

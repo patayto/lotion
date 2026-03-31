@@ -115,6 +115,22 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+.day-has-data {
+    position: relative;
+}
+
+.day-has-data::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background-color: var(--primary);
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
