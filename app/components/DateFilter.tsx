@@ -21,9 +21,11 @@ export function DateFilter({ currentDate, datesWithData }: {
     const router = useRouter()
 
     // Use the passed prop for the initial state to ensure server/client match
-    const [date, setDate] = React.useState<Date | undefined>(
-        currentDate ? new Date(currentDate) : new Date()
-    )
+    const [date, setDate] = React.useState<Date | undefined>(() => {
+        if (!currentDate) return new Date()
+        const [year, month, day] = currentDate.split('-').map(Number)
+        return new Date(year, month - 1, day, 12, 0, 0)
+    })
 
     const datesWithDataParsed = React.useMemo(
         () => datesWithData.map(d => {
