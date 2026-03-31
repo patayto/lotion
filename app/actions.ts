@@ -348,6 +348,90 @@ export async function getTaskHistory(taskDefinitionId: string) {
     })
 }
 
+export async function createBucket(title: string): Promise<void> {
+    const session = await auth()
+    if (!session?.user) throw new Error('Unauthorized')
+
+    const lastBucket = await prisma.bucket.findFirst({ orderBy: { order: 'desc' } })
+    await prisma.bucket.create({
+        data: { title, order: (lastBucket?.order ?? 0) + 1, color: 'gray' }
+    })
+    revalidatePath('/')
+}
+
+export async function deleteBucket(bucketId: string): Promise<void> {
+    const session = await auth()
+    if (!session?.user) throw new Error('Unauthorized')
+
+    // Find or create an "Unassigned" bucket to receive orphaned tasks
+    let unassignedBucket = await prisma.bucket.findFirst({
+        where: { title: 'Unassigned', id: { not: bucketId } }
+    })
+    if (!unassignedBucket) {
+        const lastBucket = await prisma.bucket.findFirst({
+            where: { id: { not: bucketId } },
+            orderBy: { order: 'desc' }
+        })
+        unassignedBucket = await prisma.bucket.create({
+            data: { title: 'Unassigned', order: (lastBucket?.order ?? 0) + 1, color: 'gray' }
+        })
+    }
+
+    // Clean up historical assignment data for this bucket
+    const assignments = await prisma.assignment.findMany({
+        where: { bucketId },
+        select: { id: true }
+    })
+    if (assignments.length > 0) {
+        const assignmentIds = assignments.map(a => a.id)
+        const progressRecords = await prisma.taskProgress.findMany({
+            where: { assignmentId: { in: assignmentIds } },
+            select: { id: true }
+        })
+        if (progressRecords.length > 0) {
+            const progressIds = progressRecords.map(p => p.id)
+            await prisma.taskEvent.deleteMany({ where: { taskProgressId: { in: progressIds } } })
+            await prisma.taskProgress.deleteMany({ where: { id: { in: progressIds } } })
+        }
+        await prisma.assignment.deleteMany({ where: { bucketId } })
+    }
+
+    // Move task definitions to the Unassigned bucket
+    const lastTaskInTarget = await prisma.taskDefinition.findFirst({
+        where: { bucketId: unassignedBucket.id },
+        orderBy: { order: 'desc' }
+    })
+    const tasksToMove = await prisma.taskDefinition.findMany({
+        where: { bucketId },
+        orderBy: { order: 'asc' }
+    })
+    let nextOrder = (lastTaskInTarget?.order ?? 0) + 1
+    for (const task of tasksToMove) {
+        await prisma.taskDefinition.update({
+            where: { id: task.id },
+            data: { bucketId: unassignedBucket.id, order: nextOrder++ }
+        })
+    }
+
+    await prisma.bucket.delete({ where: { id: bucketId } })
+    revalidatePath('/')
+}
+
+export async function reorderTasks(bucketId: string, taskIds: string[]): Promise<void> {
+    const session = await auth()
+    if (!session?.user) throw new Error('Unauthorized')
+
+    await prisma.$transaction(
+        taskIds.map((id, index) =>
+            prisma.taskDefinition.update({
+                where: { id },
+                data: { order: index + 1 }
+            })
+        )
+    )
+    revalidatePath('/')
+}
+
 export async function getDatesWithData(): Promise<string[]> {
     const session = await auth()
     if (!session?.user) throw new Error('Unauthorized')

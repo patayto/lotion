@@ -5,6 +5,7 @@ import { BucketCard } from './components/BucketCard'
 import { DashboardClientWrapper, HeaderUserAction } from './components/DashboardClientWrapper'
 import { DateFilter } from './components/DateFilter'
 import { DailyReportButton } from './components/DailyReport'
+import { AddBucketCard } from './components/EditComponents'
 
 export const dynamic = 'force-dynamic'
 
@@ -75,6 +76,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
                 />
               )
             })}
+            <AddBucketCard />
           </div>
         </main>
       </div>
