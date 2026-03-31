@@ -41,7 +41,9 @@ function generateCSV(report: ReportData): string {
         }
     }
     for (const b of report.unassignedBuckets) {
-        rows.push([report.date, b.title, 'Unassigned', `(${b.taskCount} tasks)`, 'Unassigned', '', '', ''])
+        for (const t of b.tasks) {
+            rows.push([report.date, b.title, 'Unassigned', t.content, 'Unassigned', '', '', ''])
+        }
     }
     return rows.map(r => r.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(',')).join('\n')
 }
@@ -170,15 +172,26 @@ function ReportBody({ report }: { report: ReportData }) {
                     <h3 className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-2">
                         Unassigned Buckets
                     </h3>
-                    <ul className="space-y-1">
+                    <div className="space-y-3">
                         {unassignedBuckets.map(b => (
-                            <li key={b.id} className="flex items-center gap-2 text-sm text-muted-foreground">
-                                {b.icon && <Icon name={b.icon} className="h-4 w-4" />}
-                                <span>{b.title}</span>
-                                <span className="text-xs">({b.taskCount} tasks)</span>
-                            </li>
+                            <div key={b.id} className="border rounded-lg p-3 opacity-70">
+                                <div className="flex items-center gap-2 mb-2">
+                                    {b.icon && <Icon name={b.icon} className="h-4 w-4 text-slate-500" />}
+                                    <span className="font-medium text-slate-700">{b.title}</span>
+                                    <span className="text-xs text-muted-foreground">({b.tasks.length} tasks)</span>
+                                </div>
+                                {b.tasks.length > 0 && (
+                                    <ul className="space-y-1 pl-1">
+                                        {b.tasks.map(t => (
+                                            <li key={t.taskId} className="text-sm text-muted-foreground">
+                                                ○ {t.content}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                )}
+                            </div>
                         ))}
-                    </ul>
+                    </div>
                 </section>
             )}
         </div>

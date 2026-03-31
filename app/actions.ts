@@ -395,7 +395,7 @@ type DailyReportData = {
         id: string
         title: string
         icon: string | null
-        taskCount: number
+        tasks: Array<{ taskId: string; content: string }>
     }>
 }
 
@@ -476,12 +476,19 @@ export async function getDailyReport(date: string): Promise<DailyReportData> {
     // Unassigned buckets
     const unassignedBuckets: DailyReportData['unassignedBuckets'] = buckets
         .filter(b => !assignedBucketIds.has(b.id))
-        .map(b => ({ id: b.id, title: b.title, icon: b.icon, taskCount: b.tasks.length }))
+        .map(b => ({
+            id: b.id,
+            title: b.title,
+            icon: b.icon,
+            tasks: b.tasks.map(t => ({ taskId: t.id, content: t.content })),
+        }))
 
-    // Summary
+    // Summary — count all tasks across assigned and unassigned buckets
     const totalBuckets = buckets.length
     const assignedBucketsCount = assignments.length
-    const totalTasks = assignments.reduce((s, a) => s + a.completed.length + a.outstanding.length, 0)
+    const assignedTasksTotal = assignments.reduce((s, a) => s + a.completed.length + a.outstanding.length, 0)
+    const unassignedTasksTotal = unassignedBuckets.reduce((s, b) => s + b.tasks.length, 0)
+    const totalTasks = assignedTasksTotal + unassignedTasksTotal
     const completedTasks = assignments.reduce((s, a) => s + a.completed.length, 0)
     const outstandingTasks = totalTasks - completedTasks
     const completionPercent = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 1000) / 10 : 0
