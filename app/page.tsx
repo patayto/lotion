@@ -11,13 +11,13 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
   const { date: dateParam } = await searchParams
   const today = new Date().toISOString().split('T')[0]
   const date = dateParam || today
-  const isReadOnly = date !== today
   const [state, datesWithData] = await Promise.all([
     getDailyState(date),
     getDatesWithData(),
   ])
 
   const { buckets, assignments, users, missedTaskIds, currentUserRole } = state
+  const isReadOnly = date !== today && currentUserRole !== 'ADMIN'
 
   // Identify unassigned buckets
   const unassigned = buckets.filter(b => {
