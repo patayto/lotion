@@ -33,7 +33,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
       <div className="min-h-screen bg-slate-50 pb-20">
         <header className="bg-white border-b px-6 py-4 flex items-center justify-between sticky top-0 z-10">
           <div className="flex items-center gap-4">
-            <h1 className="text-xl font-bold tracking-tight text-slate-900">Daily Progress Tracker</h1>
+            <h1 className="text-xl font-bold tracking-tight text-slate-900">Lotion</h1>
             {date !== today && (
               <span className="text-xs bg-slate-100 text-slate-600 px-2 py-1 rounded">
                 History: {date}
