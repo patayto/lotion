@@ -4,6 +4,7 @@ import { MorningHuddle } from './components/MorningHuddle'
 import { BucketCard } from './components/BucketCard'
 import { DashboardClientWrapper, HeaderUserAction } from './components/DashboardClientWrapper'
 import { DateFilter } from './components/DateFilter'
+import { DailyReportButton } from './components/DailyReport'
 
 export const dynamic = 'force-dynamic'
 
@@ -47,6 +48,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
               {new Date(date).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
             </div>
             <HeaderUserAction />
+            {currentUserRole === 'ADMIN' && <DailyReportButton date={date} />}
           </div>
         </header>
 
