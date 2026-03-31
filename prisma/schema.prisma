@@ -3,8 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model User {
@@ -17,6 +18,8 @@ model User {
 
   assignments     Assignment[]
   supportedTasks  TaskProgress[]
+  completedTasks  TaskProgress[] @relation("CompletedBy")
+  taskEvents      TaskEvent[]
 }
 
 model Bucket {
@@ -74,9 +77,25 @@ model TaskProgress {
   // If someone else supported this task
   supportedByUserId String?
 
+  // The user who last marked the task done
+  completedByUserId String?
+
   assignment       Assignment     @relation(fields: [assignmentId], references: [id])
   taskDefinition   TaskDefinition @relation(fields: [taskDefinitionId], references: [id])
   supportedBy      User?          @relation(fields: [supportedByUserId], references: [id])
+  completedBy      User?          @relation("CompletedBy", fields: [completedByUserId], references: [id])
+  events           TaskEvent[]
 
   @@unique([assignmentId, taskDefinitionId])
+}
+
+model TaskEvent {
+  id             String   @id @default(cuid())
+  taskProgressId String
+  userId         String
+  action         String   // "COMPLETED" | "UNCOMPLETED"
+  createdAt      DateTime @default(now())
+
+  taskProgress   TaskProgress @relation(fields: [taskProgressId], references: [id])
+  user           User         @relation(fields: [userId], references: [id])
 }

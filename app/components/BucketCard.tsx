@@ -40,6 +40,7 @@ interface Assignment {
         taskDefinitionId: string
         status: string
         supportedByUserId: string | null
+        completedBy?: { id: string; name: string } | null
     }[]
 }
 
@@ -263,6 +264,11 @@ export function BucketCard({ bucket, assignment, users, missedTaskIds = [], date
                                     {isDone && progress?.supportedByUserId && (
                                         <p className="text-xs text-muted-foreground">
                                             Supported by {users.find(u => u.id === progress.supportedByUserId)?.name || 'Unknown'}
+                                        </p>
+                                    )}
+                                    {isDone && progress?.completedBy && (
+                                        <p className="text-xs text-muted-foreground">
+                                            Done by {progress.completedBy.name}
                                         </p>
                                     )}
                                 </div>

@@ -39,7 +39,11 @@ export async function getDailyState(date: string) {
         where: { dailyLogId: dailyLog.id },
         include: {
             user: true,
-            taskProgress: true,
+            taskProgress: {
+                include: {
+                    completedBy: { select: { id: true, name: true } }
+                }
+            },
         },
     })
 
@@ -157,26 +161,37 @@ export async function toggleTask(
         }
     })
 
+    let progress
     if (existing) {
-        await prisma.taskProgress.update({
+        progress = await prisma.taskProgress.update({
             where: { id: existing.id },
             data: {
                 status: isDone ? 'DONE' : 'PENDING',
                 completedAt: isDone ? new Date() : null,
-                supportedByUserId: supporterId || null
+                supportedByUserId: supporterId || null,
+                completedByUserId: isDone ? session.user.id : null,
             }
         })
     } else {
-        await prisma.taskProgress.create({
+        progress = await prisma.taskProgress.create({
             data: {
                 assignmentId,
                 taskDefinitionId,
                 status: isDone ? 'DONE' : 'PENDING',
                 completedAt: isDone ? new Date() : null,
-                supportedByUserId: supporterId || null
+                supportedByUserId: supporterId || null,
+                completedByUserId: isDone ? session.user.id : null,
             }
         })
     }
+
+    await prisma.taskEvent.create({
+        data: {
+            taskProgressId: progress.id,
+            userId: session.user.id,
+            action: isDone ? 'COMPLETED' : 'UNCOMPLETED',
+        }
+    })
 
     revalidatePath('/')
 }
@@ -294,4 +309,24 @@ export async function deleteUser(id: string) {
         where: { id }
     })
     revalidatePath('/')
+}
+
+export async function getTaskHistory(taskDefinitionId: string) {
+    const session = await auth()
+    if (!session?.user) throw new Error('Unauthorized')
+
+    return prisma.taskEvent.findMany({
+        where: {
+            taskProgress: { taskDefinitionId }
+        },
+        include: {
+            user: { select: { id: true, name: true } },
+            taskProgress: {
+                include: {
+                    taskDefinition: { select: { content: true } }
+                }
+            }
+        },
+        orderBy: { createdAt: 'desc' },
+    })
 }
