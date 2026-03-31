@@ -106,6 +106,23 @@ export async function getDailyState(date: string) {
     return { dailyLog, buckets, assignments, users, missedTaskIds, currentUserRole: session.user.role }
 }
 
+export async function getOrCreateAssignment(bucketId: string, date: string): Promise<string> {
+    const session = await auth()
+    if (!session?.user) throw new Error('Unauthorized')
+
+    const dailyLog = await ensureDailyLog(date)
+
+    const existing = await prisma.assignment.findUnique({
+        where: { dailyLogId_bucketId: { dailyLogId: dailyLog.id, bucketId } }
+    })
+    if (existing) return existing.id
+
+    const created = await prisma.assignment.create({
+        data: { dailyLogId: dailyLog.id, bucketId, userId: null }
+    })
+    return created.id
+}
+
 export async function assignBucket(bucketId: string, userId: string, date: string) {
     const session = await auth()
     if (!session?.user) throw new Error('Unauthorized')

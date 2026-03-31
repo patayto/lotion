@@ -6,7 +6,7 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { Button } from '@/components/ui/button'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
-import { toggleTask, deleteTaskDefinition } from '@/app/actions'
+import { toggleTask, deleteTaskDefinition, getOrCreateAssignment } from '@/app/actions'
 import { cn } from '@/lib/utils'
 import { useUser } from './UserContext'
 import { EditBucketTitle, EditTaskControls, AddTaskButton, useEditMode } from './EditComponents'
@@ -77,6 +77,8 @@ export function BucketCard({ bucket, assignment, users, missedTaskIds = [], date
     // Optimistic state: track task completion locally
     const [optimisticTasks, setOptimisticTasks] = useState<Map<string, boolean>>(new Map())
     const [optimisticAssignee, setOptimisticAssignee] = useState<User | null | undefined>(undefined)
+    // Tracks the assignment ID if we had to create one on-demand (bucket was unassigned with no DB record)
+    const [createdAssignmentId, setCreatedAssignmentId] = useState<string | null>(null)
 
     // Use optimistic assignee if available, otherwise use server state
     const assignee = optimisticAssignee !== undefined ? optimisticAssignee : assignment?.user
@@ -86,7 +88,6 @@ export function BucketCard({ bucket, assignment, users, missedTaskIds = [], date
 
     function handleToggle(taskId: string, checked: boolean) {
         if (isReadOnly) return
-        if (!assignment) return
         if (!currentUser) {
             alert("Please select a user first (top right)")
             return
@@ -105,7 +106,13 @@ export function BucketCard({ bucket, assignment, users, missedTaskIds = [], date
 
         startTransition(async () => {
             try {
-                await toggleTask(assignment.id, taskId, checked, supporterId)
+                // If no assignment record exists yet, create one on-demand
+                const assignmentId = assignment?.id ?? createdAssignmentId ?? await (async () => {
+                    const id = await getOrCreateAssignment(bucket.id, date)
+                    setCreatedAssignmentId(id)
+                    return id
+                })()
+                await toggleTask(assignmentId, taskId, checked, supporterId)
                 // Success: keep the optimistic state (it will sync with server on next render)
             } catch (error) {
                 // Error: revert the optimistic update
@@ -256,7 +263,7 @@ export function BucketCard({ bucket, assignment, users, missedTaskIds = [], date
                                     <Checkbox
                                         id={task.id}
                                         checked={isDone}
-                                        disabled={isReadOnly || !isAssigned || isTaskLoading}
+                                        disabled={isReadOnly || isTaskLoading}
                                         onCheckedChange={(c) => handleToggle(task.id, c as boolean)}
                                     />
                                     {isTaskLoading && (
