@@ -65,7 +65,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
               const assignment = assignments.find(a => a.bucketId === bucket.id) || null
               return (
                 <BucketCard
-                  key={bucket.id}
+                  key={`${bucket.id}-${date}`}
                   bucketId={bucket.id}
                   bucket={bucket}
                   assignment={assignment}

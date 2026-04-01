@@ -1,8 +1,9 @@
 'use client'
 
 import * as React from 'react'
+import { createPortal } from 'react-dom'
 import { format } from 'date-fns'
-import { Calendar as CalendarIcon } from 'lucide-react'
+import { Calendar as CalendarIcon, Loader2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
 import { cn } from '@/lib/utils'
@@ -19,8 +20,9 @@ export function DateFilter({ currentDate, datesWithData }: {
     datesWithData: string[]
 }) {
     const router = useRouter()
+    const [open, setOpen] = React.useState(false)
+    const [isPending, startTransition] = React.useTransition()
 
-    // Use the passed prop for the initial state to ensure server/client match
     const [date, setDate] = React.useState<Date | undefined>(() => {
         if (!currentDate) return new Date()
         const [year, month, day] = currentDate.split('-').map(Number)
@@ -36,43 +38,57 @@ export function DateFilter({ currentDate, datesWithData }: {
     )
 
     const handleSelect = (newDate: Date | undefined) => {
-        // Only update if a date is actually selected
         if (!newDate) return
 
         setDate(newDate)
+        setOpen(false)
 
-        // adjust to local YYYY-MM-DD to avoid timezone shifts when passing to URL
         const offset = newDate.getTimezoneOffset()
         const localDate = new Date(newDate.getTime() - (offset * 60 * 1000))
         const dateStr = localDate.toISOString().split('T')[0]
 
-        router.push(`?date=${dateStr}`)
+        startTransition(() => {
+            router.push(`?date=${dateStr}`)
+        })
     }
 
     return (
-        <Popover>
-            <PopoverTrigger asChild>
-                <Button
-                    variant={"outline"}
-                    className={cn(
-                        "w-[200px] justify-start text-left font-normal",
-                        !date && "text-muted-foreground"
-                    )}
-                >
-                    <CalendarIcon className="mr-2 h-4 w-4" />
-                    {date ? format(date, "PPP") : <span>Pick a date</span>}
-                </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0">
-                <Calendar
-                    mode="single"
-                    selected={date}
-                    onSelect={handleSelect}
-                    modifiers={{ hasData: datesWithDataParsed }}
-                    modifiersClassNames={{ hasData: 'day-has-data' }}
-                    initialFocus
-                />
-            </PopoverContent>
-        </Popover>
+        <>
+            <Popover open={open} onOpenChange={setOpen}>
+                <PopoverTrigger asChild>
+                    <Button
+                        variant="outline"
+                        disabled={isPending}
+                        className={cn(
+                            "w-[200px] justify-start text-left font-normal",
+                            !date && "text-muted-foreground"
+                        )}
+                    >
+                        {isPending
+                            ? <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            : <CalendarIcon className="mr-2 h-4 w-4" />}
+                        {date ? format(date, "PPP") : <span>Pick a date</span>}
+                    </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0">
+                    <Calendar
+                        mode="single"
+                        selected={date}
+                        onSelect={handleSelect}
+                        modifiers={{ hasData: datesWithDataParsed }}
+                        modifiersClassNames={{ hasData: 'day-has-data' }}
+                        initialFocus
+                    />
+                </PopoverContent>
+            </Popover>
+
+            {isPending && typeof document !== 'undefined' && createPortal(
+                <div className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-3 bg-white/70 backdrop-blur-sm">
+                    <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                    <p className="text-sm font-medium text-slate-600">Loading {date ? format(date, 'MMM d, yyyy') : 'date'}…</p>
+                </div>,
+                document.body
+            )}
+        </>
     )
 }
