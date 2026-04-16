@@ -15,8 +15,8 @@
   "dependencies": {
     "@auth/prisma-adapter": "^2.11.1",
     "@opentelemetry/api": "^1.9.1",
-    "@opentelemetry/exporter-trace-otlp-http": "^0.214.0",
-    "@opentelemetry/sdk-node": "^0.214.0",
+    "@opentelemetry/exporter-trace-otlp-http": "^0.53.0",
+    "@opentelemetry/sdk-node": "^0.53.0",
     "@prisma/client": "^5.22.0",
     "@prisma/instrumentation": "^5.22.0",
     "@radix-ui/react-avatar": "^1.1.11",
