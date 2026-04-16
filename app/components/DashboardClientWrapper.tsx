@@ -14,15 +14,17 @@ export function useCurrentUserRole() {
 export function DashboardClientWrapper({
     children,
     users,
-    currentUserRole
+    currentUserRole,
+    currentUserId
 }: {
     children: React.ReactNode,
     users: any[],
-    currentUserRole: string
+    currentUserRole: string,
+    currentUserId?: string
 }) {
     return (
         <CurrentUserRoleContext.Provider value={currentUserRole}>
-            <UserProvider initialUsers={users}>
+            <UserProvider initialUsers={users} currentUserId={currentUserId}>
                 <EditProvider>
                     {children}
                 </EditProvider>

@@ -15,15 +15,16 @@ interface UserContextType {
 
 const UserContext = createContext<UserContextType | undefined>(undefined)
 
-export function UserProvider({ children, initialUsers }: { children: React.ReactNode, initialUsers: User[] }) {
+export function UserProvider({ children, initialUsers, currentUserId }: { children: React.ReactNode, initialUsers: User[], currentUserId?: string }) {
     const [currentUser, setCurrentUser] = useState<User | null>(null)
 
-    // Default to first user for convenience if none selected, or let them pick
+    // Default to the logged-in user, but fallback to first user if tracking missing
     useEffect(() => {
         if (initialUsers.length > 0 && !currentUser) {
-            setCurrentUser(initialUsers[0])
+            const defaultUser = currentUserId ? initialUsers.find(u => u.id === currentUserId) : null;
+            setCurrentUser(defaultUser || initialUsers[0])
         }
-    }, [initialUsers, currentUser])
+    }, [initialUsers, currentUser, currentUserId])
 
     return (
         <UserContext.Provider value={{ currentUser, setCurrentUser, users: initialUsers }}>

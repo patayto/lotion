@@ -112,11 +112,6 @@ export function BucketCard({
         }
         if (loadingTaskId) return
 
-        let supporterId: string | undefined = undefined
-        if (assignee && currentUser.id !== assignee.id) {
-            supporterId = currentUser.id
-        }
-
         setOptimisticTasks(prev => new Map(prev).set(taskId, checked))
         setLoadingTaskId(taskId)
 
@@ -127,7 +122,7 @@ export function BucketCard({
                     setCreatedAssignmentId(id)
                     return id
                 })()
-                await toggleTask(assignmentId, taskId, checked, supporterId)
+                await toggleTask(assignmentId, taskId, checked)
             } catch (error) {
                 console.error('Failed to toggle task:', error)
                 setOptimisticTasks(prev => { const next = new Map(prev); next.delete(taskId); return next })

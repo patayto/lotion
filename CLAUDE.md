@@ -2,9 +2,8 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
----
-
-## 🚧 ACTIVE MIGRATION: Vercel Deployment
+<!-- MANUAL -->
+## Active Migration: Vercel Deployment
 
 **Status**: Migrating to production deployment on Vercel
 
@@ -55,165 +54,158 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 npm install next-auth@beta @auth/prisma-adapter bcryptjs
 npm install -D @types/bcryptjs
 ```
+<!-- END MANUAL -->
 
 ---
 
-## Project Overview
+<!-- AUTO-MANAGED: project-description -->
+## Overview
 
-This is a **Daily Progress Tracker** application built with Next.js 16, React 19, Prisma, and PostgreSQL (migrating from SQLite). It allows teams to track daily task assignments across multiple "buckets" (categories), assign tasks to team members, and monitor completion status.
+**Daily Progress Tracker** — a Next.js 16 / React 19 application for teams to track daily task assignments across categorized buckets, assign tasks to team members, and monitor completion status.
 
-## Development Commands
+**Stack**: Next.js 16, React 19, Prisma, PostgreSQL (migrating from SQLite), NextAuth.js v5, shadcn/ui, Tailwind CSS v4, TypeScript.
+<!-- END AUTO-MANAGED -->
+
+<!-- AUTO-MANAGED: build-commands -->
+## Build & Development Commands
 
 ```bash
-# Start development server
-npm run dev
+# Development
+npm run dev      # Start development server (http://localhost:3000)
+npm run build    # Build for production
+npm start        # Start production server
+npm run lint     # Lint code
 
-# Build for production
-npm run build
-
-# Start production server
-npm start
-
-# Lint code
-npm run lint
-
-# Database operations
-npx prisma generate          # Generate Prisma Client after schema changes
-npx prisma db push          # Push schema changes to MongoDB
-npx prisma studio           # Open Prisma Studio GUI
-npx prisma db seed          # Seed the database with initial data
+# Database
+docker-compose up -d                      # Start local PostgreSQL
+npx prisma migrate dev --name <name>      # Create and run a migration
+npx prisma db push                        # Sync schema without migration files
+npx prisma generate                       # Regenerate Prisma Client after schema changes
+npx prisma db seed                        # Seed database with sample data
+npx prisma studio                         # Open Prisma GUI
 ```
 
-## Environment Setup
+### Environment Variables
 
-**Current (during migration)**:
 ```bash
-# Local development with Docker PostgreSQL
+# Local development (Docker PostgreSQL)
 DATABASE_URL="postgresql://postgres:postgres@localhost:5432/lotion_dev"
 NEXTAUTH_SECRET="dev-secret-change-in-production"
 NEXTAUTH_URL="http://localhost:3000"
-```
 
-**Production (Vercel)**:
-```bash
-DATABASE_URL="..."                    # Auto-populated by Vercel Postgres
-NEXTAUTH_SECRET="..."                 # Generate with: openssl rand -base64 32
+# Production (Vercel)
+DATABASE_URL="..."          # Auto-populated by Vercel Postgres
+NEXTAUTH_SECRET="..."       # openssl rand -base64 32
 NEXTAUTH_URL="https://your-app.vercel.app"
 ```
 
-**Legacy (pre-migration)**:
+### Local Dev Setup
+
 ```bash
-DATABASE_URL="file:./dev.db"          # SQLite local database
-TEAM_PASSPHRASE="your-passphrase"     # Simple auth (being replaced)
-```
-
-## Architecture Overview
-
-### Data Model Flow
-
-The app operates on a daily basis with this hierarchy:
-
-1. **DailyLog** (one per date) → Contains **Assignments** for that day
-2. **Bucket** (persistent categories like "Morning Routine", "Work Tasks") → Contains **TaskDefinitions**
-3. **Assignment** (links DailyLog + Bucket + User) → Contains **TaskProgress** for each task
-4. **TaskProgress** (tracks completion of individual tasks) → Can have a `supportedByUserId` when someone helps
-
-Key relationships:
-- Each date gets its own `DailyLog` (auto-created via `ensureDailyLog()`)
-- Buckets are assigned to users per day through `Assignment`
-- Task completion is tracked through `TaskProgress` records
-- "Missed tasks" logic: checks yesterday's assignments for incomplete tasks
-
-### Application Structure
-
-**Server Actions** (`app/actions.ts`):
-- All database operations are Next.js Server Actions
-- Main function: `getDailyState(date)` - fetches all data needed for a given date
-- Handles CRUD for assignments, tasks, users, and buckets
-- Uses `revalidatePath('/')` after mutations to refresh UI
-
-**Authentication** (post-migration: `auth.ts` + `middleware.ts`):
-- NextAuth.js with Credentials provider (email/password)
-- JWT session strategy
-- Middleware uses NextAuth session check, redirects to `/login` if not authenticated
-- Individual user authentication with hashed passwords (bcrypt)
-- Admin creates user accounts (no self-registration)
-
-**Legacy auth** (pre-migration):
-- Simple cookie-based auth using `TEAM_PASSPHRASE` environment variable
-- `app/api/auth/route.ts` - passphrase validation endpoint (will be deleted)
-
-**Client State** (`app/components/UserContext.tsx`):
-- React Context provides current user selection across the app
-- User switching affects which tasks are shown/editable
-- Auto-selects first user on load if none selected
-
-**UI Components**:
-- `BucketCard.tsx` - Displays a bucket's tasks with checkboxes and assignment controls
-- `MorningHuddle.tsx` - Shows unassigned buckets at the start of the day
-- `EditComponents.tsx` - Inline editing for buckets, tasks, and users
-- `DateFilter.tsx` - Navigate between different dates
-- `UserSwitcher.tsx` - Dropdown to change current user
-
-### Key Technical Patterns
-
-**Dynamic Rendering**:
-- Main page uses `export const dynamic = 'force-dynamic'` to ensure fresh data
-- Server Components fetch data, pass to Client Components for interactivity
-
-**Prisma with PostgreSQL** (post-migration):
-- Uses `@default(cuid())` for string IDs
-- Standard PostgreSQL relational model
-- Unique constraints: `[dailyLogId, bucketId]` for assignments, `[assignmentId, taskDefinitionId]` for progress
-
-**Prisma Client Singleton** (`lib/prisma.ts`):
-- Use singleton pattern to prevent connection exhaustion in serverless environment
-- Import from `lib/prisma` instead of creating new `PrismaClient()` instances
-
-**UI Library**:
-- shadcn/ui components (Button, Card, Dialog, etc.) in `components/ui/`
-- Radix UI primitives with Tailwind CSS styling
-- Lucide React for icons
-
-## Common Workflows
-
-### Adding a new bucket field
-1. Update `prisma/schema.prisma`
-2. Run `npx prisma db push`
-3. Run `npx prisma generate`
-4. Update relevant queries in `app/actions.ts`
-5. Update UI in `BucketCard.tsx` or `EditComponents.tsx`
-
-### Database schema changes (PostgreSQL)
-- Use `npx prisma migrate dev --name <name>` for local development
-- Use `npx prisma db push` for quick sync without migration files
-- Migrations stored in `prisma/migrations/` directory
-- Run `npx prisma generate` after schema changes to update client
-
-### Local development setup (post-migration)
-```bash
-# Start PostgreSQL
 docker-compose up -d
-
-# Install dependencies and setup database
 npm install
 npx prisma migrate dev
 npx prisma db seed
-
-# Start dev server
 npm run dev
+# Test credentials: alice@example.com / password123
+```
+<!-- END AUTO-MANAGED -->
+
+<!-- AUTO-MANAGED: architecture -->
+## Architecture
+
+### Directory Structure
+
+```
+lotion-react/
+├── app/
+│   ├── actions.ts              # All server actions (DB operations)
+│   ├── page.tsx                # Main dashboard (Server Component)
+│   ├── layout.tsx              # Root layout
+│   ├── login/page.tsx          # Login page (email/password)
+│   ├── api/auth/route.ts       # Legacy auth API (pre-migration)
+│   ├── lib/auth-actions.ts     # Auth server actions
+│   └── components/
+│       ├── UserContext.tsx     # React Context for current user
+│       ├── BucketCard.tsx      # Bucket tasks UI
+│       ├── MorningHuddle.tsx   # Unassigned buckets view
+│       ├── EditComponents.tsx  # Inline editing UI
+│       ├── DateFilter.tsx      # Date navigation
+│       ├── UserSwitcher.tsx    # User dropdown
+│       ├── DailyReport.tsx     # Daily summary
+│       ├── DashboardClientWrapper.tsx
+│       └── TeamManager.tsx     # User management
+├── components/ui/              # shadcn/ui components
+├── lib/
+│   ├── prisma.ts               # Prisma client singleton
+│   └── utils.ts                # Utility functions
+├── prisma/
+│   ├── schema.prisma           # Database schema
+│   ├── seed.ts                 # Seed script
+│   └── migrations/             # Migration files
+├── auth.ts                     # NextAuth configuration
+├── middleware.ts               # Auth middleware (session check)
+├── docker-compose.yml          # Local PostgreSQL
+└── next.config.ts
 ```
 
-### Testing new features
-- No test framework is currently configured
-- Manual testing via `npm run dev` at http://localhost:3000
+### Data Model
+
+```
+DailyLog (one per date)
+  └── Assignment (DailyLog + Bucket + User)
+        └── TaskProgress (task completion status)
+
+Bucket (persistent categories)
+  └── TaskDefinition (tasks within a bucket)
+```
+
+Key: each date auto-creates a `DailyLog` via `ensureDailyLog()`. Buckets are assigned to users per day through `Assignment`.
+
+### Key Subsystems
+
+**Server Actions** (`app/actions.ts`): All DB operations are Next.js Server Actions. `getDailyState(date)` is the main data-fetching function. Uses `revalidatePath('/')` after mutations.
+
+**Auth** (`auth.ts` + `middleware.ts`): NextAuth.js v5, Credentials provider (email/password), JWT sessions, bcrypt password hashing. No self-registration — admin creates accounts.
+
+**Client State** (`app/components/UserContext.tsx`): React Context for current user selection. Auto-selects first user on load.
+<!-- END AUTO-MANAGED -->
+
+<!-- AUTO-MANAGED: conventions -->
+## Code Conventions
+
+- **Language**: TypeScript throughout; server action return types are inferred
+- **Components**: Client Components marked with `'use client'`; Server Components fetch data and pass to client components
+- **Rendering**: `export const dynamic = 'force-dynamic'` on main page for fresh data
+- **Database**: Import Prisma client from `lib/prisma` (singleton) — never create new `PrismaClient()` instances
+- **IDs**: `@default(cuid())` for string IDs in Prisma schema
+- **Dates**: All dates stored as ISO strings (`YYYY-MM-DD`) in `DailyLog.date`
+- **UI**: shadcn/ui components from `components/ui/`; Radix UI primitives; Lucide React icons
+<!-- END AUTO-MANAGED -->
+
+<!-- AUTO-MANAGED: patterns -->
+## Detected Patterns
+
+- **Server Action pattern**: All mutations in `app/actions.ts` call `revalidatePath('/')` after DB writes
+- **Missed tasks**: Calculated by comparing yesterday's incomplete tasks — see `getDailyState()` lines ~64–84
+- **Assignment guard**: A bucket must be assigned to a user before tasks can be tracked for that day
+- **Prisma singleton**: `lib/prisma.ts` uses singleton to prevent connection exhaustion in serverless
+- **Unique constraints**: `[dailyLogId, bucketId]` for assignments; `[assignmentId, taskDefinitionId]` for task progress
+
+### Adding a New Bucket Field
+1. Update `prisma/schema.prisma`
+2. `npx prisma db push` + `npx prisma generate`
+3. Update queries in `app/actions.ts`
+4. Update UI in `BucketCard.tsx` or `EditComponents.tsx`
+<!-- END AUTO-MANAGED -->
+
+<!-- MANUAL -->
+## Custom Notes
+
+Add project-specific notes here. This section is never auto-modified.
+
+### Important Reminders
+- No test framework is configured — manual testing via `npm run dev`
 - Use Prisma Studio (`npx prisma studio`) to inspect database state
-- Test credentials (after seeding): alice@example.com / password123
-
-## Important Notes
-
-- **Date handling**: All dates stored as ISO strings (`YYYY-MM-DD`) in the `DailyLog.date` field
-- **Assignment logic**: A bucket must be assigned to a user before tasks can be tracked for that day
-- **Missed tasks**: Calculated by comparing yesterday's incomplete tasks (see `getDailyState()` around line 64-84)
-- **No TypeScript interfaces**: Server Action return types are inferred; add explicit types if needed
-- **Seeding**: `prisma/seed.ts` creates sample buckets and users for development
+- `app/api/auth/route.ts` is legacy passphrase auth — will be deleted post-migration
+<!-- END MANUAL -->

@@ -18,7 +18,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
     getDatesWithData(),
   ])
 
-  const { buckets, assignments, users, missedTaskIds, currentUserRole } = state
+  const { buckets, assignments, users, missedTaskIds, currentUserRole, currentUserId } = state
   const isReadOnly = date !== today && currentUserRole !== 'ADMIN'
 
   // Identify unassigned buckets
@@ -29,7 +29,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
 
   // Group everything for render
   return (
-    <DashboardClientWrapper users={users} currentUserRole={currentUserRole}>
+    <DashboardClientWrapper users={users} currentUserRole={currentUserRole} currentUserId={currentUserId}>
       <div className="min-h-screen bg-slate-50 pb-20">
         <header className="bg-white border-b px-6 py-4 flex items-center justify-between sticky top-0 z-10">
           <div className="flex items-center gap-4">
@@ -55,10 +55,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
 
         <main className="max-w-7xl mx-auto px-6 py-8">
 
-          {/* Only show Morning Huddle if it is today */}
-          {date === today && unassigned.length > 0 && (
-            <MorningHuddle unassignedBuckets={unassigned} users={users} date={today} />
-          )}
+          <MorningHuddle unassignedBuckets={unassigned} users={users} date={today} />
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {buckets.map(bucket => {

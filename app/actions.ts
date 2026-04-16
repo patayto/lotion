@@ -103,7 +103,7 @@ export async function getDailyState(date: string) {
         }
     }
 
-    return { dailyLog, buckets, assignments, users, missedTaskIds, currentUserRole: session.user.role }
+    return { dailyLog, buckets, assignments, users, missedTaskIds, currentUserRole: session.user.role, currentUserId: session.user.id }
 }
 
 export async function getOrCreateAssignment(bucketId: string, date: string): Promise<string> {
@@ -162,11 +162,19 @@ export async function assignBucket(bucketId: string, userId: string, date: strin
 export async function toggleTask(
     assignmentId: string,
     taskDefinitionId: string,
-    isDone: boolean,
-    supporterId?: string
+    isDone: boolean
 ) {
     const session = await auth()
     if (!session?.user) throw new Error('Unauthorized')
+
+    // Find assignment to see who it belongs to
+    const assignment = await prisma.assignment.findUnique({
+        where: { id: assignmentId }
+    })
+
+    // Determine if the logged-in user is supporting someone else
+    const isSupporter = assignment?.userId && session.user.id !== assignment.userId;
+    const computedSupporterId = isSupporter ? session.user.id : null;
 
     // Check if progress entry exists
     const existing = await prisma.taskProgress.findUnique({
@@ -185,7 +193,7 @@ export async function toggleTask(
             data: {
                 status: isDone ? 'DONE' : 'PENDING',
                 completedAt: isDone ? new Date() : null,
-                supportedByUserId: supporterId || null,
+                supportedByUserId: isDone ? computedSupporterId : null,
                 completedByUserId: isDone ? session.user.id : null,
             }
         })
@@ -196,7 +204,7 @@ export async function toggleTask(
                 taskDefinitionId,
                 status: isDone ? 'DONE' : 'PENDING',
                 completedAt: isDone ? new Date() : null,
-                supportedByUserId: supporterId || null,
+                supportedByUserId: isDone ? computedSupporterId : null,
                 completedByUserId: isDone ? session.user.id : null,
             }
         })
