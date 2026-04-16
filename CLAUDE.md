@@ -56,6 +56,28 @@ npm install -D @types/bcryptjs
 ```
 <!-- END MANUAL -->
 
+<!-- MANUAL -->
+## Observability & Tracing
+
+**Status**: OpenTelemetry implemented for assignment operations, pending full coverage.
+
+### Current Implementation
+- Next.js instrumentation set up via native configuration and `instrumentation.ts` in root.
+- Prisma query auto-tracing enabled via `previewFeatures = ["tracing"]`.
+- The Next.js Otel integration exports traces to OTLP HTTP (`http://localhost:4318/v1/traces`) for Jaeger.
+- A `jaegertracing/all-in-one:latest` Docker service was added to `docker-compose.yml` to view traces on `localhost:16686`.
+- Target Operations explicitly instrumented with custom `@opentelemetry/api` active spans: `assignBucket`, `getDailyState`.
+
+### Pending Tracing Tasks
+- [ ] Instrument `toggleTask`
+- [ ] Instrument `createBucket`, `updateBucket`, `deleteBucket`
+- [ ] Instrument `createTaskDefinition`, `updateTaskDefinition`, `deleteTaskDefinition`
+- [ ] Instrument `createUser`, `updateUser`, `deleteUser`
+- [ ] Instrument `reorderTasks`
+- [ ] Instrument `getTaskHistory`
+- [ ] Instrument `getDatesWithData`, `getDailyReport`, `getOrCreateAssignment`
+<!-- END MANUAL -->
+
 ---
 
 <!-- AUTO-MANAGED: project-description -->

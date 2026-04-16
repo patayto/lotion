@@ -4,6 +4,9 @@ import { prisma } from '@/lib/prisma'
 import { revalidatePath } from 'next/cache'
 import { auth } from '../auth'
 import bcrypt from 'bcryptjs'
+import { trace } from '@opentelemetry/api'
+
+const tracer = trace.getTracer('lotion-actions')
 
 // Ensure we have a DailyLog for the specific date
 async function ensureDailyLog(date: string) {
@@ -19,6 +22,17 @@ async function ensureDailyLog(date: string) {
 }
 
 export async function getDailyState(date: string) {
+    return tracer.startActiveSpan('getDailyState', async (span) => {
+        try {
+            span.setAttribute('date', date);
+            return await _getDailyState(date);
+        } finally {
+            span.end();
+        }
+    });
+}
+
+async function _getDailyState(date: string) {
     const session = await auth()
     if (!session?.user) throw new Error('Unauthorized')
 
@@ -124,6 +138,19 @@ export async function getOrCreateAssignment(bucketId: string, date: string): Pro
 }
 
 export async function assignBucket(bucketId: string, userId: string, date: string) {
+    return tracer.startActiveSpan('assignBucket', async (span) => {
+        try {
+            span.setAttribute('bucketId', bucketId);
+            span.setAttribute('userId', userId);
+            span.setAttribute('date', date);
+            return await _assignBucket(bucketId, userId, date);
+        } finally {
+            span.end();
+        }
+    });
+}
+
+async function _assignBucket(bucketId: string, userId: string, date: string) {
     const session = await auth()
     if (!session?.user) throw new Error('Unauthorized')
 
