@@ -7,4 +7,4 @@
 -[x] ability to assign buckets in advance (day before)
 -[x] also seeing this when ashleigh checks something off: [image showing "supported by lorna" under all task completions](blob:https%3A//web.whatsapp.com/54180594-c645-4eed-962a-5f1d2753ff77)
 -[] speeding up common actions (assigments, checkoffs)
-    -[] adding OpenTelemetry tracing
+    -[x] adding OpenTelemetry tracing
