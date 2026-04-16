@@ -487,7 +487,18 @@ type DailyReportData = {
         id: string
         title: string
         icon: string | null
-        tasks: Array<{ taskId: string; content: string }>
+        color: string
+        completed: Array<{
+            taskId: string
+            content: string
+            completedAt: Date | null
+            completedBy: { id: string; name: string } | null
+            supportedBy: { id: string; name: string } | null
+        }>
+        outstanding: Array<{
+            taskId: string
+            content: string
+        }>
     }>
 }
 
@@ -509,18 +520,18 @@ export async function getDailyReport(date: string): Promise<DailyReportData> {
 
     const dbAssignments = dailyLog
         ? await prisma.assignment.findMany({
-              where: { dailyLogId: dailyLog.id },
-              include: {
-                  user: true,
-                  bucket: true,
-                  taskProgress: {
-                      include: {
-                          completedBy: { select: { id: true, name: true } },
-                          supportedBy: { select: { id: true, name: true } },
-                      },
-                  },
-              },
-          })
+            where: { dailyLogId: dailyLog.id },
+            include: {
+                user: true,
+                bucket: true,
+                taskProgress: {
+                    include: {
+                        completedBy: { select: { id: true, name: true } },
+                        supportedBy: { select: { id: true, name: true } },
+                    },
+                },
+            },
+        })
         : []
 
     // Build assignments array (only assigned ones)
@@ -568,20 +579,44 @@ export async function getDailyReport(date: string): Promise<DailyReportData> {
     // Unassigned buckets
     const unassignedBuckets: DailyReportData['unassignedBuckets'] = buckets
         .filter(b => !assignedBucketIds.has(b.id))
-        .map(b => ({
-            id: b.id,
-            title: b.title,
-            icon: b.icon,
-            tasks: b.tasks.map(t => ({ taskId: t.id, content: t.content })),
-        }))
+        .map(b => {
+            const completed: DailyReportData['unassignedBuckets'][0]['completed'] = []
+            const outstanding: DailyReportData['unassignedBuckets'][0]['outstanding'] = []
+            
+            const assignment = dbAssignments.find(a => a.bucketId === b.id)
+
+            for (const task of b.tasks) {
+                const progress = assignment?.taskProgress.find(p => p.taskDefinitionId === task.id)
+                if (progress && progress.status === 'DONE') {
+                    completed.push({
+                        taskId: task.id,
+                        content: task.content,
+                        completedAt: progress.completedAt,
+                        completedBy: progress.completedBy ?? null,
+                        supportedBy: progress.supportedBy ?? null,
+                    })
+                } else {
+                    outstanding.push({ taskId: task.id, content: task.content })
+                }
+            }
+
+            return {
+                id: b.id,
+                title: b.title,
+                icon: b.icon,
+                color: b.color,
+                completed,
+                outstanding,
+            }
+        })
 
     // Summary — count all tasks across assigned and unassigned buckets
     const totalBuckets = buckets.length
     const assignedBucketsCount = assignments.length
     const assignedTasksTotal = assignments.reduce((s, a) => s + a.completed.length + a.outstanding.length, 0)
-    const unassignedTasksTotal = unassignedBuckets.reduce((s, b) => s + b.tasks.length, 0)
+    const unassignedTasksTotal = unassignedBuckets.reduce((s, b) => s + b.completed.length + b.outstanding.length, 0)
     const totalTasks = assignedTasksTotal + unassignedTasksTotal
-    const completedTasks = assignments.reduce((s, a) => s + a.completed.length, 0)
+    const completedTasks = assignments.reduce((s, a) => s + a.completed.length, 0) + unassignedBuckets.reduce((s, b) => s + b.completed.length, 0)
     const outstandingTasks = totalTasks - completedTasks
     const completionPercent = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 1000) / 10 : 0
 

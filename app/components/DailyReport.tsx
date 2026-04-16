@@ -41,7 +41,19 @@ function generateCSV(report: ReportData): string {
         }
     }
     for (const b of report.unassignedBuckets) {
-        for (const t of b.tasks) {
+        for (const t of b.completed) {
+            rows.push([
+                report.date,
+                b.title,
+                'Unassigned',
+                t.content,
+                'Completed',
+                t.completedBy?.name ?? '',
+                t.completedAt ? new Date(t.completedAt).toLocaleString() : '',
+                t.supportedBy?.name ?? '',
+            ])
+        }
+        for (const t of b.outstanding) {
             rows.push([report.date, b.title, 'Unassigned', t.content, 'Unassigned', '', '', ''])
         }
     }
@@ -174,21 +186,66 @@ function ReportBody({ report }: { report: ReportData }) {
                     </h3>
                     <div className="space-y-3">
                         {unassignedBuckets.map(b => (
-                            <div key={b.id} className="border rounded-lg p-3 opacity-70">
-                                <div className="flex items-center gap-2 mb-2">
+                            <div key={b.id} className="border rounded-lg p-3 opacity-80">
+                                <div className="flex items-center gap-2 mb-3">
                                     {b.icon && <Icon name={b.icon} className="h-4 w-4 text-slate-500" />}
-                                    <span className="font-medium text-slate-700">{b.title}</span>
-                                    <span className="text-xs text-muted-foreground">({b.tasks.length} tasks)</span>
+                                    <span className="font-semibold text-slate-700">{b.title}</span>
+                                    <span className="text-xs text-muted-foreground">({b.completed.length + b.outstanding.length} tasks)</span>
                                 </div>
-                                {b.tasks.length > 0 && (
-                                    <ul className="space-y-1 pl-1">
-                                        {b.tasks.map(t => (
-                                            <li key={t.taskId} className="text-sm text-muted-foreground">
-                                                ○ {t.content}
-                                            </li>
-                                        ))}
-                                    </ul>
-                                )}
+                                
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                    {/* Completed */}
+                                    <div>
+                                        <p className="text-xs font-medium text-green-700 mb-1.5 opacity-80">
+                                            ✓ Completed ({b.completed.length})
+                                        </p>
+                                        {b.completed.length === 0 ? (
+                                            <p className="text-xs text-muted-foreground italic">None</p>
+                                        ) : (
+                                            <ul className="space-y-1.5">
+                                                {b.completed.map(t => (
+                                                    <li key={t.taskId} className="text-sm">
+                                                        <span className="text-slate-700">{t.content}</span>
+                                                        <div className="text-xs text-muted-foreground flex flex-wrap gap-2 mt-0.5">
+                                                            {t.completedBy && (
+                                                                <span>by {t.completedBy.name}</span>
+                                                            )}
+                                                            {t.completedAt && (
+                                                                <span>
+                                                                    {new Date(t.completedAt).toLocaleTimeString([], {
+                                                                        hour: '2-digit',
+                                                                        minute: '2-digit',
+                                                                    })}
+                                                                </span>
+                                                            )}
+                                                            {t.supportedBy && (
+                                                                <span>supported by {t.supportedBy.name}</span>
+                                                            )}
+                                                        </div>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        )}
+                                    </div>
+
+                                    {/* Outstanding */}
+                                    <div>
+                                        <p className="text-xs font-medium text-amber-700 mb-1.5 opacity-80">
+                                            ○ Outstanding ({b.outstanding.length})
+                                        </p>
+                                        {b.outstanding.length === 0 ? (
+                                            <p className="text-xs text-muted-foreground italic">All done!</p>
+                                        ) : (
+                                            <ul className="space-y-1.5">
+                                                {b.outstanding.map(t => (
+                                                    <li key={t.taskId} className="text-sm text-muted-foreground">
+                                                        {t.content}
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        )}
+                                    </div>
+                                </div>
                             </div>
                         ))}
                     </div>
