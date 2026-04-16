@@ -11,9 +11,10 @@ interface MorningHuddleProps {
     unassignedBuckets: any[] // Bucket[]
     users: any[] // User[]
     date: string
+    isReadOnly?: boolean
 }
 
-export function MorningHuddle({ unassignedBuckets, users, date }: MorningHuddleProps) {
+export function MorningHuddle({ unassignedBuckets, users, date, isReadOnly }: MorningHuddleProps) {
     const [loading, setLoading] = useState(false)
 
     // We handle assignments one by one for simplicity in this MVP
@@ -39,7 +40,7 @@ export function MorningHuddle({ unassignedBuckets, users, date }: MorningHuddleP
                                     {bucket.icon && <Icon name={bucket.icon} className="h-4 w-4 text-muted-foreground" />}
                                     <span className="font-medium text-sm">{bucket.title}</span>
                                 </div>
-                                <AssignmentDropdown bucketId={bucket.id} users={users} date={date} />
+                                <AssignmentDropdown bucketId={bucket.id} users={users} date={date} isReadOnly={isReadOnly} />
                             </div>
                         ))}
                     </div>
@@ -49,7 +50,7 @@ export function MorningHuddle({ unassignedBuckets, users, date }: MorningHuddleP
     )
 }
 
-function AssignmentDropdown({ bucketId, users, date }: { bucketId: string, users: any[], date: string }) {
+function AssignmentDropdown({ bucketId, users, date, isReadOnly }: { bucketId: string, users: any[], date: string, isReadOnly?: boolean }) {
     const [isPending, setIsPending] = useState(false)
 
     async function handleAssign(userId: string) {
@@ -62,7 +63,7 @@ function AssignmentDropdown({ bucketId, users, date }: { bucketId: string, users
     }
 
     return (
-        <Select onValueChange={handleAssign} disabled={isPending}>
+        <Select onValueChange={handleAssign} disabled={isPending || isReadOnly}>
             <SelectTrigger className="w-[130px] h-8 text-xs">
                 <SelectValue placeholder="Assign to..." />
             </SelectTrigger>
