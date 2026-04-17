@@ -1,5 +1,5 @@
 import { Suspense } from 'react'
-import { getDailyState, getDatesWithData } from '@/app/actions'
+import { getDailyState } from '@/app/actions'
 import { MorningHuddle } from './components/MorningHuddle'
 import { BucketCard } from './components/BucketCard'
 import { DashboardClientWrapper, HeaderUserAction } from './components/DashboardClientWrapper'
@@ -13,12 +13,9 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
   const { date: dateParam } = await searchParams
   const today = new Date().toISOString().split('T')[0]
   const date = dateParam || today
-  const [state, datesWithData] = await Promise.all([
-    getDailyState(date),
-    getDatesWithData(),
-  ])
+  const state = await getDailyState(date)
 
-  const { buckets, assignments, users, missedTaskIds, currentUserRole, currentUserId } = state
+  const { buckets, assignments, users, missedTaskIds, currentUserRole, currentUserId, datesWithData } = state
   const isReadOnly = date !== today && currentUserRole !== 'ADMIN'
 
   // Identify unassigned buckets

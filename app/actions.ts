@@ -36,88 +36,109 @@ async function _getDailyState(date: string) {
     const session = await auth()
     if (!session?.user) throw new Error('Unauthorized')
 
-    const dailyLog = await ensureDailyLog(date)
-
-    // Get all buckets
-    const buckets = await prisma.bucket.findMany({
-        orderBy: { order: 'asc' },
-        include: {
-            tasks: {
-                orderBy: { order: 'asc' },
-            },
-        },
-    })
-
-    // Get assignments for this day
-    const assignments = await prisma.assignment.findMany({
-        where: { dailyLogId: dailyLog.id },
-        include: {
-            user: true,
-            taskProgress: {
-                include: {
-                    completedBy: { select: { id: true, name: true } }
-                }
-            },
-        },
-    })
-
-    // Get all users for the assignment dropdown
-    const users = await prisma.user.findMany()
-
-    // Find yesterday's missed tasks (simplified logic: check yesterday's log)
-    // Calculate "yesterday" from "date"
+    // Calculate yesterday's date for missed-task detection
     const d = new Date(date)
     d.setDate(d.getDate() - 1)
     const yesterdayDate = d.toISOString().split('T')[0]
 
-    const yesterdayLog = await prisma.dailyLog.findUnique({
-        where: { date: yesterdayDate },
-        include: {
-            assignments: {
-                include: {
-                    taskProgress: true
+    // --- Parallel batch 1: all independent queries ---
+    const [dailyLog, buckets, users, yesterdayLog, datesWithData] = await Promise.all([
+        // 1. Ensure today's DailyLog exists
+        ensureDailyLog(date),
+        // 2. All buckets + their task definitions
+        prisma.bucket.findMany({
+            orderBy: { order: 'asc' },
+            include: {
+                tasks: {
+                    orderBy: { order: 'asc' },
+                },
+            },
+        }),
+        // 3. All users for the assignment dropdown
+        prisma.user.findMany(),
+        // 4. Yesterday's log with assignments + progress (for missed tasks)
+        prisma.dailyLog.findUnique({
+            where: { date: yesterdayDate },
+            include: {
+                assignments: {
+                    include: {
+                        taskProgress: true
+                    }
                 }
             }
-        }
-    })
+        }),
+        // 5. Dates that have assignment data (for DateFilter)
+        prisma.dailyLog.findMany({
+            where: {
+                assignments: {
+                    some: { userId: { not: null } }
+                }
+            },
+            select: { date: true },
+            orderBy: { date: 'asc' },
+        }),
+    ])
 
-    const missedTaskIds: string[] = []
-    if (yesterdayLog && yesterdayLog.assignments.length > 0) {
-        // Optimize: Get all bucket tasks in one query instead of N queries
-        const assignedBucketIds = yesterdayLog.assignments
-            .filter(a => a.userId) // Only assigned buckets
-            .map(a => a.bucketId)
-
-        if (assignedBucketIds.length > 0) {
-            const allBucketTasks = await prisma.taskDefinition.findMany({
+    // --- Parallel batch 2: queries that depend on dailyLog.id ---
+    const [assignments, missedTaskDefinitions] = await Promise.all([
+        // Assignments for today
+        prisma.assignment.findMany({
+            where: { dailyLogId: dailyLog.id },
+            include: {
+                user: true,
+                taskProgress: {
+                    include: {
+                        completedBy: { select: { id: true, name: true } }
+                    }
+                },
+            },
+        }),
+        // Missed tasks: fetch task definitions for yesterday's assigned buckets
+        (async () => {
+            if (!yesterdayLog || yesterdayLog.assignments.length === 0) return []
+            const assignedBucketIds = yesterdayLog.assignments
+                .filter(a => a.userId)
+                .map(a => a.bucketId)
+            if (assignedBucketIds.length === 0) return []
+            return prisma.taskDefinition.findMany({
                 where: { bucketId: { in: assignedBucketIds } }
             })
+        })(),
+    ])
 
-            // Build a map for fast lookup
-            const tasksByBucket = new Map<string, typeof allBucketTasks>()
-            for (const task of allBucketTasks) {
-                if (!tasksByBucket.has(task.bucketId)) {
-                    tasksByBucket.set(task.bucketId, [])
-                }
-                tasksByBucket.get(task.bucketId)!.push(task)
+    // Compute missed task IDs from yesterday's data
+    const missedTaskIds: string[] = []
+    if (yesterdayLog && yesterdayLog.assignments.length > 0) {
+        const tasksByBucket = new Map<string, typeof missedTaskDefinitions>()
+        for (const task of missedTaskDefinitions) {
+            if (!tasksByBucket.has(task.bucketId)) {
+                tasksByBucket.set(task.bucketId, [])
             }
+            tasksByBucket.get(task.bucketId)!.push(task)
+        }
 
-            // Check each assignment for incomplete tasks
-            for (const assignment of yesterdayLog.assignments) {
-                if (!assignment.userId) continue
-
-                const bucketTasks = tasksByBucket.get(assignment.bucketId) || []
-                for (const task of bucketTasks) {
-                    const progress = assignment.taskProgress.find(p => p.taskDefinitionId === task.id)
-                    if (!progress || progress.status !== 'DONE') {
-                        missedTaskIds.push(task.id)
-                    }
+        for (const assignment of yesterdayLog.assignments) {
+            if (!assignment.userId) continue
+            const bucketTasks = tasksByBucket.get(assignment.bucketId) || []
+            for (const task of bucketTasks) {
+                const progress = assignment.taskProgress.find(p => p.taskDefinitionId === task.id)
+                if (!progress || progress.status !== 'DONE') {
+                    missedTaskIds.push(task.id)
                 }
             }
         }
     }
 
-    return { dailyLog, buckets, assignments, users, missedTaskIds, currentUserRole: session.user.role, currentUserId: session.user.id }
+    return {
+        dailyLog,
+        buckets,
+        assignments,
+        users,
+        missedTaskIds,
+        currentUserRole: session.user.role,
+        currentUserId: session.user.id,
+        datesWithData: datesWithData.map(l => l.date),
+    }
 }
 
 export async function getOrCreateAssignment(bucketId: string, date: string): Promise<string> {
