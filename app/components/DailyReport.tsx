@@ -343,6 +343,7 @@ export function DailyReportButton({ date }: { date: string }) {
                             variant="outline"
                             size="sm"
                             onClick={() => handleOpenChange(false)}
+                            data-testid="close-report-button"
                         >
                             Close
                         </Button>

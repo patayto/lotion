@@ -1,5 +1,8 @@
 import '@testing-library/react'
-import { vi } from 'vitest'
+import { vi, expect } from 'vitest'
+import * as matchers from '@testing-library/jest-dom/matchers'
+
+expect.extend(matchers)
 
 // Add global mocks if needed
 // e.g., mocking window.matchMedia

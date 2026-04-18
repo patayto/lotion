@@ -29,6 +29,12 @@ export function DateFilter({ currentDate, datesWithData }: {
         return new Date(year, month - 1, day, 12, 0, 0)
     })
 
+    React.useEffect(() => {
+        if (!currentDate) return
+        const [year, month, day] = currentDate.split('-').map(Number)
+        setDate(new Date(year, month - 1, day, 12, 0, 0))
+    }, [currentDate])
+
     const datesWithDataParsed = React.useMemo(
         () => datesWithData.map(d => {
             const [year, month, day] = d.split('-').map(Number)
