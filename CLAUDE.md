@@ -105,6 +105,10 @@ npx prisma db push                        # Sync schema without migration files
 npx prisma generate                       # Regenerate Prisma Client after schema changes
 npx prisma db seed                        # Seed database with sample data
 npx prisma studio                         # Open Prisma GUI
+
+# Testing
+npm test                                  # Run all tests (Vitest)
+npm run test:watch                        # Run tests in watch mode
 ```
 
 ### Environment Variables
@@ -203,6 +207,7 @@ Key: each date auto-creates a `DailyLog` via `ensureDailyLog()`. Buckets are ass
 - **IDs**: `@default(cuid())` for string IDs in Prisma schema
 - **Dates**: All dates stored as ISO strings (`YYYY-MM-DD`) in `DailyLog.date`
 - **UI**: shadcn/ui components from `components/ui/`; Radix UI primitives; Lucide React icons
+- **Testing**: Vitest for unit/integration tests; Mocks for Prisma and Auth are in `__tests__/`
 <!-- END AUTO-MANAGED -->
 
 <!-- AUTO-MANAGED: patterns -->
@@ -227,7 +232,6 @@ Key: each date auto-creates a `DailyLog` via `ensureDailyLog()`. Buckets are ass
 Add project-specific notes here. This section is never auto-modified.
 
 ### Important Reminders
-- No test framework is configured — manual testing via `npm run dev`
 - Use Prisma Studio (`npx prisma studio`) to inspect database state
 - `app/api/auth/route.ts` is legacy passphrase auth — will be deleted post-migration
 <!-- END MANUAL -->
