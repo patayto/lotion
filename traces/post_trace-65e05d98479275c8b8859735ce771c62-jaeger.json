@@ -1,0 +1,4150 @@
+{
+  "data": [
+    {
+      "traceID": "65e05d98479275c8b8859735ce771c62",
+      "spans": [
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "6fc64e13c67bf211",
+          "flags": 0,
+          "operationName": "POST /",
+          "references": [],
+          "startTime": 1776464494160000,
+          "duration": 4294204.72,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            },
+            {
+              "key": "span.kind",
+              "value": "server",
+              "type": "string"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "b8ef7b9c414d9e6f",
+          "flags": 0,
+          "operationName": "resolve page components",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "6fc64e13c67bf211"
+            }
+          ],
+          "startTime": 1776464494163000,
+          "duration": 62905.938,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "6ea82f2ee67efd93",
+          "flags": 0,
+          "operationName": "prisma:client:connect",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "6fc64e13c67bf211"
+            }
+          ],
+          "startTime": 1776464494396000,
+          "duration": 529615.823,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "c99a7ce46799b425",
+          "flags": 0,
+          "operationName": "prisma:engine:connect",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "6ea82f2ee67efd93"
+            }
+          ],
+          "startTime": 1776464494397189,
+          "duration": 528186.299,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "fe033256cd39235a",
+          "flags": 0,
+          "operationName": "prisma:client:serialize",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "4b49df879e6b7a66"
+            }
+          ],
+          "startTime": 1776464494407000,
+          "duration": 239.205,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "4b49df879e6b7a66",
+          "flags": 0,
+          "operationName": "prisma:client:operation",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "6fc64e13c67bf211"
+            }
+          ],
+          "startTime": 1776464494407000,
+          "duration": 909456.196,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "c268d34b41077361",
+          "flags": 0,
+          "operationName": "prisma:engine:connection",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "c99a7ce46799b425"
+            }
+          ],
+          "startTime": 1776464494416831,
+          "duration": 508385.196,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "1246fe63ac65649d",
+          "flags": 0,
+          "operationName": "prisma:engine",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "4b49df879e6b7a66"
+            }
+          ],
+          "startTime": 1776464494927436.2,
+          "duration": 389031.491,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "7d24f31c8df75413",
+          "flags": 0,
+          "operationName": "prisma:engine:connection",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "1246fe63ac65649d"
+            }
+          ],
+          "startTime": 1776464494927505,
+          "duration": 26.357,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "f58fb471c28836ae",
+          "flags": 0,
+          "operationName": "prisma:engine:db_query",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "1246fe63ac65649d"
+            }
+          ],
+          "startTime": 1776464494930538.5,
+          "duration": 76884.65,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            },
+            {
+              "key": "span.kind",
+              "value": "client",
+              "type": "string"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "d2f2c91bd81f6325",
+          "flags": 0,
+          "operationName": "prisma:engine:db_query",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "1246fe63ac65649d"
+            }
+          ],
+          "startTime": 1776464495007454,
+          "duration": 76993.824,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            },
+            {
+              "key": "span.kind",
+              "value": "client",
+              "type": "string"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "6504098d3096d086",
+          "flags": 0,
+          "operationName": "prisma:engine:db_query",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "1246fe63ac65649d"
+            }
+          ],
+          "startTime": 1776464495086053,
+          "duration": 153385.129,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            },
+            {
+              "key": "span.kind",
+              "value": "client",
+              "type": "string"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "7b76e5676f707527",
+          "flags": 0,
+          "operationName": "prisma:engine:serialize",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "1246fe63ac65649d"
+            }
+          ],
+          "startTime": 1776464495239544.8,
+          "duration": 38.788,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "961d897a6c9210e1",
+          "flags": 0,
+          "operationName": "prisma:engine:db_query",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "1246fe63ac65649d"
+            }
+          ],
+          "startTime": 1776464495239611.2,
+          "duration": 76795.821,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            },
+            {
+              "key": "span.kind",
+              "value": "client",
+              "type": "string"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "6df0b7a2ecfc108d",
+          "flags": 0,
+          "operationName": "prisma:engine:response_json_serialization",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "1246fe63ac65649d"
+            }
+          ],
+          "startTime": 1776464495316453.8,
+          "duration": 8.649,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "c0a63f5ce9aa24ea",
+          "flags": 0,
+          "operationName": "prisma:client:serialize",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "32c1e2035c0f9947"
+            }
+          ],
+          "startTime": 1776464495317000,
+          "duration": 125.315,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "32c1e2035c0f9947",
+          "flags": 0,
+          "operationName": "prisma:client:operation",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "6fc64e13c67bf211"
+            }
+          ],
+          "startTime": 1776464495317000,
+          "duration": 386214.308,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "e8f0a95e1b446e32",
+          "flags": 0,
+          "operationName": "prisma:engine",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "32c1e2035c0f9947"
+            }
+          ],
+          "startTime": 1776464495317958.5,
+          "duration": 385032.487,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "ddff3b37d2e216f1",
+          "flags": 0,
+          "operationName": "prisma:engine:connection",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "e8f0a95e1b446e32"
+            }
+          ],
+          "startTime": 1776464495318055.2,
+          "duration": 30.162,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "b40e473bdca1523f",
+          "flags": 0,
+          "operationName": "prisma:engine:db_query",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "e8f0a95e1b446e32"
+            }
+          ],
+          "startTime": 1776464495318326.8,
+          "duration": 76934.417,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            },
+            {
+              "key": "span.kind",
+              "value": "client",
+              "type": "string"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "ee01d140799752fa",
+          "flags": 0,
+          "operationName": "prisma:engine:db_query",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "e8f0a95e1b446e32"
+            }
+          ],
+          "startTime": 1776464495395290.2,
+          "duration": 76504.001,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            },
+            {
+              "key": "span.kind",
+              "value": "client",
+              "type": "string"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "b0b9584862b90754",
+          "flags": 0,
+          "operationName": "prisma:engine:db_query",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "e8f0a95e1b446e32"
+            }
+          ],
+          "startTime": 1776464495472035,
+          "duration": 154045.758,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            },
+            {
+              "key": "span.kind",
+              "value": "client",
+              "type": "string"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "2611e8e066e1b28a",
+          "flags": 0,
+          "operationName": "prisma:engine:serialize",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "e8f0a95e1b446e32"
+            }
+          ],
+          "startTime": 1776464495626172,
+          "duration": 32.195,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "6aa8d7c022008d61",
+          "flags": 0,
+          "operationName": "prisma:engine:db_query",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "e8f0a95e1b446e32"
+            }
+          ],
+          "startTime": 1776464495626275,
+          "duration": 76655.532,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            },
+            {
+              "key": "span.kind",
+              "value": "client",
+              "type": "string"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "72e1186b1f380b5a",
+          "flags": 0,
+          "operationName": "prisma:engine:response_json_serialization",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "e8f0a95e1b446e32"
+            }
+          ],
+          "startTime": 1776464495702971.8,
+          "duration": 11.332,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "91263907da94b024",
+          "flags": 0,
+          "operationName": "prisma:client:serialize",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "4b3b36c4599f0df6"
+            }
+          ],
+          "startTime": 1776464495703000,
+          "duration": 149.886,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "4b3b36c4599f0df6",
+          "flags": 0,
+          "operationName": "prisma:client:operation",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "6fc64e13c67bf211"
+            }
+          ],
+          "startTime": 1776464495703000,
+          "duration": 404732.929,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "6e49a918be0c8719",
+          "flags": 0,
+          "operationName": "prisma:engine",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "4b3b36c4599f0df6"
+            }
+          ],
+          "startTime": 1776464495704370,
+          "duration": 403618.751,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "8c7b15f42b28992e",
+          "flags": 0,
+          "operationName": "prisma:engine:connection",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "6e49a918be0c8719"
+            }
+          ],
+          "startTime": 1776464495704448.5,
+          "duration": 39.809,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "b7bb7e7c2dbcc84e",
+          "flags": 0,
+          "operationName": "prisma:engine:db_query",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "6e49a918be0c8719"
+            }
+          ],
+          "startTime": 1776464495704792.2,
+          "duration": 76647.066,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            },
+            {
+              "key": "span.kind",
+              "value": "client",
+              "type": "string"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "f2d55ff9725ed0b4",
+          "flags": 0,
+          "operationName": "prisma:engine:db_query",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "6e49a918be0c8719"
+            }
+          ],
+          "startTime": 1776464495781470,
+          "duration": 76749.315,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            },
+            {
+              "key": "span.kind",
+              "value": "client",
+              "type": "string"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "f30b5446a7d2d382",
+          "flags": 0,
+          "operationName": "prisma:engine:db_query",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "6e49a918be0c8719"
+            }
+          ],
+          "startTime": 1776464495858419.5,
+          "duration": 169537.69,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            },
+            {
+              "key": "span.kind",
+              "value": "client",
+              "type": "string"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "e63900ce316ad683",
+          "flags": 0,
+          "operationName": "prisma:engine:serialize",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "6e49a918be0c8719"
+            }
+          ],
+          "startTime": 1776464496028050,
+          "duration": 22.722,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "5b5e9d7722a06ed2",
+          "flags": 0,
+          "operationName": "prisma:engine:db_query",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "6e49a918be0c8719"
+            }
+          ],
+          "startTime": 1776464496028118.8,
+          "duration": 79811.772,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            },
+            {
+              "key": "span.kind",
+              "value": "client",
+              "type": "string"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "e5ff896d222a5924",
+          "flags": 0,
+          "operationName": "prisma:engine:response_json_serialization",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "6e49a918be0c8719"
+            }
+          ],
+          "startTime": 1776464496107973,
+          "duration": 9.457,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "5467a23fd1ab52be",
+          "flags": 0,
+          "operationName": "prisma:client:operation",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "6fc64e13c67bf211"
+            }
+          ],
+          "startTime": 1776464496108000,
+          "duration": 395859.731,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "7ff485f4a49c3e15",
+          "flags": 0,
+          "operationName": "prisma:client:serialize",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "5467a23fd1ab52be"
+            }
+          ],
+          "startTime": 1776464496109000,
+          "duration": 111.132,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "df071746b5d48b91",
+          "flags": 0,
+          "operationName": "prisma:engine",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "5467a23fd1ab52be"
+            }
+          ],
+          "startTime": 1776464496109379.5,
+          "duration": 394891.039,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "dad3d6736e39f0be",
+          "flags": 0,
+          "operationName": "prisma:engine:connection",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "df071746b5d48b91"
+            }
+          ],
+          "startTime": 1776464496109455.5,
+          "duration": 22.404,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "21784b6659eda0e6",
+          "flags": 0,
+          "operationName": "prisma:engine:db_query",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "df071746b5d48b91"
+            }
+          ],
+          "startTime": 1776464496110693.8,
+          "duration": 76637.061,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            },
+            {
+              "key": "span.kind",
+              "value": "client",
+              "type": "string"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "9b4f718f24863090",
+          "flags": 0,
+          "operationName": "prisma:engine:db_query",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "df071746b5d48b91"
+            }
+          ],
+          "startTime": 1776464496187364,
+          "duration": 76599.664,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            },
+            {
+              "key": "span.kind",
+              "value": "client",
+              "type": "string"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "c5cc492bd4124538",
+          "flags": 0,
+          "operationName": "prisma:engine:db_query",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "df071746b5d48b91"
+            }
+          ],
+          "startTime": 1776464496264095.8,
+          "duration": 162568.616,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            },
+            {
+              "key": "span.kind",
+              "value": "client",
+              "type": "string"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "206b6a0f11fe42ea",
+          "flags": 0,
+          "operationName": "prisma:engine:serialize",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "df071746b5d48b91"
+            }
+          ],
+          "startTime": 1776464496426718.8,
+          "duration": 24.35,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "61bd189023042886",
+          "flags": 0,
+          "operationName": "prisma:engine:db_query",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "df071746b5d48b91"
+            }
+          ],
+          "startTime": 1776464496426778.2,
+          "duration": 77421.28,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            },
+            {
+              "key": "span.kind",
+              "value": "client",
+              "type": "string"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "1ed6fc8a3149bfc5",
+          "flags": 0,
+          "operationName": "prisma:engine:response_json_serialization",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "df071746b5d48b91"
+            }
+          ],
+          "startTime": 1776464496504252.5,
+          "duration": 12.431,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "073f58c71213800d",
+          "flags": 0,
+          "operationName": "resolve segment modules",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "7718875813c80b80"
+            }
+          ],
+          "startTime": 1776464496552000,
+          "duration": 176.519,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "7718875813c80b80",
+          "flags": 0,
+          "operationName": "build component tree",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "6fc64e13c67bf211"
+            }
+          ],
+          "startTime": 1776464496552000,
+          "duration": 1970.124,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "87084b2473fb29cd",
+          "flags": 0,
+          "operationName": "resolve segment modules",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "7718875813c80b80"
+            }
+          ],
+          "startTime": 1776464496553000,
+          "duration": 320.036,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "2b776fbfc59b973a",
+          "flags": 0,
+          "operationName": "getDailyState",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "6fc64e13c67bf211"
+            }
+          ],
+          "startTime": 1776464496555000,
+          "duration": 1866257.826,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "277107936c94811c",
+          "flags": 0,
+          "operationName": "start response",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "6fc64e13c67bf211"
+            }
+          ],
+          "startTime": 1776464496560000,
+          "duration": 38.075,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "e545fd3b62bfe338",
+          "flags": 0,
+          "operationName": "prisma:client:serialize",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "636742511beb4628"
+            }
+          ],
+          "startTime": 1776464496568000,
+          "duration": 71.313,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "f1e40eb152b65151",
+          "flags": 0,
+          "operationName": "prisma:client:serialize",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "a280fa4a0bbd7797"
+            }
+          ],
+          "startTime": 1776464496568000,
+          "duration": 135.484,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "636742511beb4628",
+          "flags": 0,
+          "operationName": "prisma:client:operation",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "2b776fbfc59b973a"
+            }
+          ],
+          "startTime": 1776464496568000,
+          "duration": 865260.531,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "6bb2519146394afe",
+          "flags": 0,
+          "operationName": "prisma:client:operation",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "2b776fbfc59b973a"
+            }
+          ],
+          "startTime": 1776464496568000,
+          "duration": 890610.678,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "a280fa4a0bbd7797",
+          "flags": 0,
+          "operationName": "prisma:client:operation",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "2b776fbfc59b973a"
+            }
+          ],
+          "startTime": 1776464496568000,
+          "duration": 1015580.489,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "9ca6c362362fd9d9",
+          "flags": 0,
+          "operationName": "prisma:client:serialize",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "6bb2519146394afe"
+            }
+          ],
+          "startTime": 1776464496569000,
+          "duration": 65.275,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "1d107aac6f3b4a9f",
+          "flags": 0,
+          "operationName": "prisma:client:serialize",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "76d07bb83dd904fa"
+            }
+          ],
+          "startTime": 1776464496569000,
+          "duration": 88.642,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "f9f225e12f56ac9d",
+          "flags": 0,
+          "operationName": "prisma:client:serialize",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "912cebc6985c98cc"
+            }
+          ],
+          "startTime": 1776464496569000,
+          "duration": 161.061,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "912cebc6985c98cc",
+          "flags": 0,
+          "operationName": "prisma:client:operation",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "2b776fbfc59b973a"
+            }
+          ],
+          "startTime": 1776464496569000,
+          "duration": 405717.596,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "76d07bb83dd904fa",
+          "flags": 0,
+          "operationName": "prisma:client:operation",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "2b776fbfc59b973a"
+            }
+          ],
+          "startTime": 1776464496569000,
+          "duration": 1008434.024,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "13c18d3acc77c2e1",
+          "flags": 0,
+          "operationName": "prisma:engine",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "912cebc6985c98cc"
+            }
+          ],
+          "startTime": 1776464496570397.2,
+          "duration": 404864.88,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "39a02ec8ce1ae7b4",
+          "flags": 0,
+          "operationName": "prisma:engine:connection",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "13c18d3acc77c2e1"
+            }
+          ],
+          "startTime": 1776464496570460.2,
+          "duration": 26.519,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "ea42245ba9eba359",
+          "flags": 0,
+          "operationName": "prisma:engine:db_query",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "13c18d3acc77c2e1"
+            }
+          ],
+          "startTime": 1776464496570783.8,
+          "duration": 76854.762,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            },
+            {
+              "key": "span.kind",
+              "value": "client",
+              "type": "string"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "8cd25cb99a9d6bdb",
+          "flags": 0,
+          "operationName": "prisma:engine",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "636742511beb4628"
+            }
+          ],
+          "startTime": 1776464496572129.2,
+          "duration": 1005327.704,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "f2906fecfca8ac8f",
+          "flags": 0,
+          "operationName": "prisma:engine",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "a280fa4a0bbd7797"
+            }
+          ],
+          "startTime": 1776464496572184.5,
+          "duration": 1011271.382,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "2ec7ce540d634ea6",
+          "flags": 0,
+          "operationName": "prisma:engine:connection",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "8cd25cb99a9d6bdb"
+            }
+          ],
+          "startTime": 1776464496572212,
+          "duration": 472781.184,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "b1ffca18358fd023",
+          "flags": 0,
+          "operationName": "prisma:engine:connection",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "f2906fecfca8ac8f"
+            }
+          ],
+          "startTime": 1776464496572248.5,
+          "duration": 478957.259,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "a5a0675c16c9298d",
+          "flags": 0,
+          "operationName": "prisma:engine",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "636742511beb4628"
+            }
+          ],
+          "startTime": 1776464496572292.8,
+          "duration": 860842.859,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "cc112b55b27629b5",
+          "flags": 0,
+          "operationName": "prisma:engine:connection",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "a5a0675c16c9298d"
+            }
+          ],
+          "startTime": 1776464496572323.8,
+          "duration": 479320.298,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "cb21c44ddeb07b90",
+          "flags": 0,
+          "operationName": "prisma:engine",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "6bb2519146394afe"
+            }
+          ],
+          "startTime": 1776464496572445,
+          "duration": 886707.712,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "8b98ae6370cd9eb2",
+          "flags": 0,
+          "operationName": "prisma:engine:connection",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "cb21c44ddeb07b90"
+            }
+          ],
+          "startTime": 1776464496572479,
+          "duration": 500815.781,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "9d65752229155a4f",
+          "flags": 0,
+          "operationName": "prisma:engine:db_query",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "13c18d3acc77c2e1"
+            }
+          ],
+          "startTime": 1776464496647674.5,
+          "duration": 77031.943,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            },
+            {
+              "key": "span.kind",
+              "value": "client",
+              "type": "string"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "103b96ccf2544883",
+          "flags": 0,
+          "operationName": "prisma:engine:db_query",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "13c18d3acc77c2e1"
+            }
+          ],
+          "startTime": 1776464496724944.2,
+          "duration": 156004.856,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            },
+            {
+              "key": "span.kind",
+              "value": "client",
+              "type": "string"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "e5cc00d5852655b0",
+          "flags": 0,
+          "operationName": "prisma:engine:serialize",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "13c18d3acc77c2e1"
+            }
+          ],
+          "startTime": 1776464496880999.2,
+          "duration": 333.407,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "2c1af51ad1aff856",
+          "flags": 0,
+          "operationName": "prisma:engine:db_query",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "13c18d3acc77c2e1"
+            }
+          ],
+          "startTime": 1776464496881499.2,
+          "duration": 93187.712,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            },
+            {
+              "key": "span.kind",
+              "value": "client",
+              "type": "string"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "5fd8ec7dda00187a",
+          "flags": 0,
+          "operationName": "prisma:engine:response_json_serialization",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "13c18d3acc77c2e1"
+            }
+          ],
+          "startTime": 1776464496975115,
+          "duration": 11.389,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "49297b30d494f27a",
+          "flags": 0,
+          "operationName": "prisma:engine:db_query",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "8cd25cb99a9d6bdb"
+            }
+          ],
+          "startTime": 1776464497045233.5,
+          "duration": 75917.867,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            },
+            {
+              "key": "span.kind",
+              "value": "client",
+              "type": "string"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "ade88d5bdb1dc87f",
+          "flags": 0,
+          "operationName": "prisma:engine:db_query",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "f2906fecfca8ac8f"
+            }
+          ],
+          "startTime": 1776464497051478.5,
+          "duration": 75817.872,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            },
+            {
+              "key": "span.kind",
+              "value": "client",
+              "type": "string"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "37db5618b1b75fd7",
+          "flags": 0,
+          "operationName": "prisma:engine:db_query",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "a5a0675c16c9298d"
+            }
+          ],
+          "startTime": 1776464497051761.2,
+          "duration": 76266.489,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            },
+            {
+              "key": "span.kind",
+              "value": "client",
+              "type": "string"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "f1a7e3fbedffb119",
+          "flags": 0,
+          "operationName": "prisma:engine:db_query",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "cb21c44ddeb07b90"
+            }
+          ],
+          "startTime": 1776464497073471.8,
+          "duration": 77019.199,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            },
+            {
+              "key": "span.kind",
+              "value": "client",
+              "type": "string"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "22655b911c18c7da",
+          "flags": 0,
+          "operationName": "prisma:engine:db_query",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "8cd25cb99a9d6bdb"
+            }
+          ],
+          "startTime": 1776464497121181.5,
+          "duration": 75958.073,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            },
+            {
+              "key": "span.kind",
+              "value": "client",
+              "type": "string"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "825d76aae08056bc",
+          "flags": 0,
+          "operationName": "prisma:engine:db_query",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "f2906fecfca8ac8f"
+            }
+          ],
+          "startTime": 1776464497127329.8,
+          "duration": 75658.098,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            },
+            {
+              "key": "span.kind",
+              "value": "client",
+              "type": "string"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "dde8f0f391f6373a",
+          "flags": 0,
+          "operationName": "prisma:engine:db_query",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "a5a0675c16c9298d"
+            }
+          ],
+          "startTime": 1776464497128049.5,
+          "duration": 76131.615,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            },
+            {
+              "key": "span.kind",
+              "value": "client",
+              "type": "string"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "32f2949a008d256b",
+          "flags": 0,
+          "operationName": "prisma:engine:db_query",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "cb21c44ddeb07b90"
+            }
+          ],
+          "startTime": 1776464497150523.2,
+          "duration": 77058.311,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            },
+            {
+              "key": "span.kind",
+              "value": "client",
+              "type": "string"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "c434899403d5bdde",
+          "flags": 0,
+          "operationName": "prisma:engine:db_query",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "8cd25cb99a9d6bdb"
+            }
+          ],
+          "startTime": 1776464497197607.5,
+          "duration": 152008.499,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            },
+            {
+              "key": "span.kind",
+              "value": "client",
+              "type": "string"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "987bebc4b8a026ca",
+          "flags": 0,
+          "operationName": "prisma:engine:db_query",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "f2906fecfca8ac8f"
+            }
+          ],
+          "startTime": 1776464497203170.5,
+          "duration": 151964.023,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            },
+            {
+              "key": "span.kind",
+              "value": "client",
+              "type": "string"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "8950460a2261e916",
+          "flags": 0,
+          "operationName": "prisma:engine:db_query",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "a5a0675c16c9298d"
+            }
+          ],
+          "startTime": 1776464497204330.2,
+          "duration": 152406.595,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            },
+            {
+              "key": "span.kind",
+              "value": "client",
+              "type": "string"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "15d139e00c1c4a56",
+          "flags": 0,
+          "operationName": "prisma:engine:db_query",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "cb21c44ddeb07b90"
+            }
+          ],
+          "startTime": 1776464497227754.5,
+          "duration": 154269.406,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            },
+            {
+              "key": "span.kind",
+              "value": "client",
+              "type": "string"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "42b9bc96d5380d5e",
+          "flags": 0,
+          "operationName": "prisma:engine:db_query",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "8cd25cb99a9d6bdb"
+            }
+          ],
+          "startTime": 1776464497349737.2,
+          "duration": 151609.973,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            },
+            {
+              "key": "span.kind",
+              "value": "client",
+              "type": "string"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "073fc90306573160",
+          "flags": 0,
+          "operationName": "prisma:engine:db_query",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "f2906fecfca8ac8f"
+            }
+          ],
+          "startTime": 1776464497355314.8,
+          "duration": 152012.056,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            },
+            {
+              "key": "span.kind",
+              "value": "client",
+              "type": "string"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "29a0d12dc2bb957c",
+          "flags": 0,
+          "operationName": "prisma:engine:serialize",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "a5a0675c16c9298d"
+            }
+          ],
+          "startTime": 1776464497356801.5,
+          "duration": 24.303,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "f7d024aa7ba634cb",
+          "flags": 0,
+          "operationName": "prisma:engine:db_query",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "a5a0675c16c9298d"
+            }
+          ],
+          "startTime": 1776464497356848.8,
+          "duration": 76224.677,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            },
+            {
+              "key": "span.kind",
+              "value": "client",
+              "type": "string"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "7d671e2f1eacba1e",
+          "flags": 0,
+          "operationName": "prisma:engine:serialize",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "cb21c44ddeb07b90"
+            }
+          ],
+          "startTime": 1776464497382083.2,
+          "duration": 58.527,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "a9620a66a1cd5413",
+          "flags": 0,
+          "operationName": "prisma:engine:db_query",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "cb21c44ddeb07b90"
+            }
+          ],
+          "startTime": 1776464497382172,
+          "duration": 76887.98,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            },
+            {
+              "key": "span.kind",
+              "value": "client",
+              "type": "string"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "dc465c00b4497965",
+          "flags": 0,
+          "operationName": "prisma:engine:response_json_serialization",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "a5a0675c16c9298d"
+            }
+          ],
+          "startTime": 1776464497433117.2,
+          "duration": 10.707,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "d5021ea866a370f5",
+          "flags": 0,
+          "operationName": "prisma:engine:response_json_serialization",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "cb21c44ddeb07b90"
+            }
+          ],
+          "startTime": 1776464497459106,
+          "duration": 32.755,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "304725ea0ee0f7a0",
+          "flags": 0,
+          "operationName": "prisma:engine:serialize",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "8cd25cb99a9d6bdb"
+            }
+          ],
+          "startTime": 1776464497501403.2,
+          "duration": 59.571,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "01cb2553b9815a11",
+          "flags": 0,
+          "operationName": "prisma:engine:db_query",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "8cd25cb99a9d6bdb"
+            }
+          ],
+          "startTime": 1776464497501503.2,
+          "duration": 75892.42,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            },
+            {
+              "key": "span.kind",
+              "value": "client",
+              "type": "string"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "f9f9b9e31443d68e",
+          "flags": 0,
+          "operationName": "prisma:engine:serialize",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "f2906fecfca8ac8f"
+            }
+          ],
+          "startTime": 1776464497507488,
+          "duration": 181.471,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "288f1636206b3535",
+          "flags": 0,
+          "operationName": "prisma:engine:db_query",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "f2906fecfca8ac8f"
+            }
+          ],
+          "startTime": 1776464497507727.2,
+          "duration": 75579.429,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            },
+            {
+              "key": "span.kind",
+              "value": "client",
+              "type": "string"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "f51153b4d53543ed",
+          "flags": 0,
+          "operationName": "prisma:engine:response_json_serialization",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "8cd25cb99a9d6bdb"
+            }
+          ],
+          "startTime": 1776464497577437.5,
+          "duration": 11.494,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "12d0ca0103004285",
+          "flags": 0,
+          "operationName": "prisma:engine:response_json_serialization",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "f2906fecfca8ac8f"
+            }
+          ],
+          "startTime": 1776464497583345.5,
+          "duration": 77.723,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "0a6c7f2002f6ca8c",
+          "flags": 0,
+          "operationName": "prisma:client:serialize",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "d4975db24ec71c36"
+            }
+          ],
+          "startTime": 1776464497584000,
+          "duration": 142.293,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "d4975db24ec71c36",
+          "flags": 0,
+          "operationName": "prisma:client:operation",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "2b776fbfc59b973a"
+            }
+          ],
+          "startTime": 1776464497584000,
+          "duration": 837434.007,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "a62e236d47a3071d",
+          "flags": 0,
+          "operationName": "prisma:engine",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "d4975db24ec71c36"
+            }
+          ],
+          "startTime": 1776464497584916.2,
+          "duration": 836283.511,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "33cab808a5a131de",
+          "flags": 0,
+          "operationName": "prisma:engine:connection",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "a62e236d47a3071d"
+            }
+          ],
+          "startTime": 1776464497585037.2,
+          "duration": 23.288,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "123f409b9338456d",
+          "flags": 0,
+          "operationName": "prisma:engine:db_query",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "a62e236d47a3071d"
+            }
+          ],
+          "startTime": 1776464497585289.5,
+          "duration": 75765.142,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            },
+            {
+              "key": "span.kind",
+              "value": "client",
+              "type": "string"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "7271dfacf422548c",
+          "flags": 0,
+          "operationName": "prisma:engine:db_query",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "a62e236d47a3071d"
+            }
+          ],
+          "startTime": 1776464497661084.2,
+          "duration": 75754.437,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            },
+            {
+              "key": "span.kind",
+              "value": "client",
+              "type": "string"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "f158b46925b4eeba",
+          "flags": 0,
+          "operationName": "prisma:engine:db_query",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "a62e236d47a3071d"
+            }
+          ],
+          "startTime": 1776464497737077.8,
+          "duration": 152160.05,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            },
+            {
+              "key": "span.kind",
+              "value": "client",
+              "type": "string"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "b5e2cfff07f9fc09",
+          "flags": 0,
+          "operationName": "prisma:engine:db_query",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "a62e236d47a3071d"
+            }
+          ],
+          "startTime": 1776464497889389.8,
+          "duration": 151562.991,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            },
+            {
+              "key": "span.kind",
+              "value": "client",
+              "type": "string"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "90eda724ac2d4716",
+          "flags": 0,
+          "operationName": "prisma:engine:db_query",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "a62e236d47a3071d"
+            }
+          ],
+          "startTime": 1776464498041102.2,
+          "duration": 151753.748,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            },
+            {
+              "key": "span.kind",
+              "value": "client",
+              "type": "string"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "2651919c87946c35",
+          "flags": 0,
+          "operationName": "prisma:engine:db_query",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "a62e236d47a3071d"
+            }
+          ],
+          "startTime": 1776464498193006,
+          "duration": 152007.906,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            },
+            {
+              "key": "span.kind",
+              "value": "client",
+              "type": "string"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "98481a2641f18ec2",
+          "flags": 0,
+          "operationName": "prisma:engine:serialize",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "a62e236d47a3071d"
+            }
+          ],
+          "startTime": 1776464498345085.5,
+          "duration": 79.977,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "9d613714dcad5f5a",
+          "flags": 0,
+          "operationName": "prisma:engine:db_query",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "a62e236d47a3071d"
+            }
+          ],
+          "startTime": 1776464498345226.8,
+          "duration": 75889.434,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            },
+            {
+              "key": "span.kind",
+              "value": "client",
+              "type": "string"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        },
+        {
+          "traceID": "65e05d98479275c8b8859735ce771c62",
+          "spanID": "96978f96278a31d0",
+          "flags": 0,
+          "operationName": "prisma:engine:response_json_serialization",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "65e05d98479275c8b8859735ce771c62",
+              "spanID": "a62e236d47a3071d"
+            }
+          ],
+          "startTime": 1776464498421157,
+          "duration": 30.835,
+          "tags": [
+            {
+              "key": "otel.library.name",
+              "type": "string",
+              "value": "opentelemetry"
+            },
+            {
+              "key": "otel.library.version",
+              "type": "string",
+              "value": "1.19.0"
+            },
+            {
+              "key": "otel.library.language",
+              "type": "string",
+              "value": "nodejs"
+            }
+          ],
+          "logs": [],
+          "processID": "lotion-react"
+        }
+      ],
+      "processes": {
+        "lotion-react": {
+          "serviceName": "lotion-react",
+          "tags": []
+        }
+      },
+      "warnings": []
+    }
+  ]
+}

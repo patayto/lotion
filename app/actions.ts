@@ -2,7 +2,7 @@
 
 import { prisma } from '@/lib/prisma'
 import { revalidatePath } from 'next/cache'
-import { auth } from '../auth'
+import { getFastSession } from '@/lib/fast-auth'
 import bcrypt from 'bcryptjs'
 import { trace } from '@opentelemetry/api'
 
@@ -10,15 +10,11 @@ const tracer = trace.getTracer('lotion-actions')
 
 // Ensure we have a DailyLog for the specific date
 async function ensureDailyLog(date: string) {
-    let dailyLog = await prisma.dailyLog.findUnique({
+    return prisma.dailyLog.upsert({
         where: { date },
+        update: {},
+        create: { date },
     })
-    if (!dailyLog) {
-        dailyLog = await prisma.dailyLog.create({
-            data: { date },
-        })
-    }
-    return dailyLog
 }
 
 export async function getDailyState(date: string) {
@@ -33,19 +29,15 @@ export async function getDailyState(date: string) {
 }
 
 async function _getDailyState(date: string) {
-    const session = await auth()
-    if (!session?.user) throw new Error('Unauthorized')
-
     // Calculate yesterday's date for missed-task detection
     const d = new Date(date)
     d.setDate(d.getDate() - 1)
     const yesterdayDate = d.toISOString().split('T')[0]
 
-    // --- Parallel batch 1: all independent queries ---
-    const [dailyLog, buckets, users, yesterdayLog, datesWithData] = await Promise.all([
-        // 1. Ensure today's DailyLog exists
-        ensureDailyLog(date),
-        // 2. All buckets + their task definitions
+    // --- Single Parallel Batch: all queries and auth run at once ---
+    const [session, buckets, users, yesterdayLog, datesWithData, assignments] = await Promise.all([
+        getFastSession(),
+        // 1. All buckets + their task definitions
         prisma.bucket.findMany({
             orderBy: { order: 'asc' },
             include: {
@@ -54,9 +46,9 @@ async function _getDailyState(date: string) {
                 },
             },
         }),
-        // 3. All users for the assignment dropdown
+        // 2. All users for the assignment dropdown
         prisma.user.findMany(),
-        // 4. Yesterday's log with assignments + progress (for missed tasks)
+        // 3. Yesterday's log with assignments + progress (for missed tasks)
         prisma.dailyLog.findUnique({
             where: { date: yesterdayDate },
             include: {
@@ -67,7 +59,7 @@ async function _getDailyState(date: string) {
                 }
             }
         }),
-        // 5. Dates that have assignment data (for DateFilter)
+        // 4. Dates that have assignment data (for DateFilter)
         prisma.dailyLog.findMany({
             where: {
                 assignments: {
@@ -77,13 +69,9 @@ async function _getDailyState(date: string) {
             select: { date: true },
             orderBy: { date: 'asc' },
         }),
-    ])
-
-    // --- Parallel batch 2: queries that depend on dailyLog.id ---
-    const [assignments, missedTaskDefinitions] = await Promise.all([
-        // Assignments for today
+        // 5. Assignments for today (queried via date relation to avoid sequential dependency)
         prisma.assignment.findMany({
-            where: { dailyLogId: dailyLog.id },
+            where: { dailyLog: { date } },
             include: {
                 user: true,
                 taskProgress: {
@@ -93,33 +81,25 @@ async function _getDailyState(date: string) {
                 },
             },
         }),
-        // Missed tasks: fetch task definitions for yesterday's assigned buckets
-        (async () => {
-            if (!yesterdayLog || yesterdayLog.assignments.length === 0) return []
-            const assignedBucketIds = yesterdayLog.assignments
-                .filter(a => a.userId)
-                .map(a => a.bucketId)
-            if (assignedBucketIds.length === 0) return []
-            return prisma.taskDefinition.findMany({
-                where: { bucketId: { in: assignedBucketIds } }
-            })
-        })(),
     ])
 
-    // Compute missed task IDs from yesterday's data
+    if (!session?.user) throw new Error('Unauthorized')
+
+    // Mutation happens strictly AFTER auth check
+    const dailyLog = await ensureDailyLog(date)
+
+    // Compute missed task IDs from yesterday's data using the buckets already fetched
     const missedTaskIds: string[] = []
     if (yesterdayLog && yesterdayLog.assignments.length > 0) {
-        const tasksByBucket = new Map<string, typeof missedTaskDefinitions>()
-        for (const task of missedTaskDefinitions) {
-            if (!tasksByBucket.has(task.bucketId)) {
-                tasksByBucket.set(task.bucketId, [])
-            }
-            tasksByBucket.get(task.bucketId)!.push(task)
+        // Group tasks by bucketId from our pre-fetched buckets
+        const tasksByBucketMap = new Map<string, any[]>()
+        for (const bucket of buckets) {
+            tasksByBucketMap.set(bucket.id, bucket.tasks)
         }
 
         for (const assignment of yesterdayLog.assignments) {
             if (!assignment.userId) continue
-            const bucketTasks = tasksByBucket.get(assignment.bucketId) || []
+            const bucketTasks = tasksByBucketMap.get(assignment.bucketId) || []
             for (const task of bucketTasks) {
                 const progress = assignment.taskProgress.find(p => p.taskDefinitionId === task.id)
                 if (!progress || progress.status !== 'DONE') {
@@ -142,7 +122,7 @@ async function _getDailyState(date: string) {
 }
 
 export async function getOrCreateAssignment(bucketId: string, date: string): Promise<string> {
-    const session = await auth()
+    const session = await getFastSession()
     if (!session?.user) throw new Error('Unauthorized')
 
     const dailyLog = await ensureDailyLog(date)
@@ -172,9 +152,10 @@ export async function assignBucket(bucketId: string, userId: string, date: strin
 }
 
 async function _assignBucket(bucketId: string, userId: string, date: string) {
-    const session = await auth()
+    const session = await getFastSession()
     if (!session?.user) throw new Error('Unauthorized')
 
+    // Mutation happens strictly AFTER auth check
     const dailyLog = await ensureDailyLog(date)
 
     // Convert empty string to null for unassignment
@@ -212,98 +193,121 @@ export async function toggleTask(
     taskDefinitionId: string,
     isDone: boolean
 ) {
-    const session = await auth()
-    if (!session?.user) throw new Error('Unauthorized')
+    return tracer.startActiveSpan('toggleTask', async (span) => {
+        try {
+            span.setAttribute('assignmentId', assignmentId);
+            span.setAttribute('taskDefinitionId', taskDefinitionId);
+            span.setAttribute('isDone', isDone);
 
-    // Find assignment to see who it belongs to
-    const assignment = await prisma.assignment.findUnique({
-        where: { id: assignmentId }
-    })
+            const [session, assignment, existing] = await Promise.all([
+                getFastSession(),
+                prisma.assignment.findUnique({ where: { id: assignmentId } }),
+                prisma.taskProgress.findUnique({
+                    where: {
+                        assignmentId_taskDefinitionId: {
+                            assignmentId,
+                            taskDefinitionId
+                        }
+                    }
+                })
+            ])
 
-    // Determine if the logged-in user is supporting someone else
-    const isSupporter = assignment?.userId && session.user.id !== assignment.userId;
-    const computedSupporterId = isSupporter ? session.user.id : null;
+            if (!session?.user) throw new Error('Unauthorized')
 
-    // Check if progress entry exists
-    const existing = await prisma.taskProgress.findUnique({
-        where: {
-            assignmentId_taskDefinitionId: {
-                assignmentId,
-                taskDefinitionId
+            // Determine if the logged-in user is supporting someone else
+            const isSupporter = assignment?.userId && session.user.id !== assignment.userId;
+            const computedSupporterId = isSupporter ? session.user.id : null;
+
+            let progress
+            if (existing) {
+                progress = await prisma.taskProgress.update({
+                    where: { id: existing.id },
+                    data: {
+                        status: isDone ? 'DONE' : 'PENDING',
+                        completedAt: isDone ? new Date() : null,
+                        supportedByUserId: isDone ? computedSupporterId : null,
+                        completedByUserId: isDone ? session.user.id : null,
+                    }
+                })
+            } else {
+                progress = await prisma.taskProgress.create({
+                    data: {
+                        assignmentId,
+                        taskDefinitionId,
+                        status: isDone ? 'DONE' : 'PENDING',
+                        completedAt: isDone ? new Date() : null,
+                        supportedByUserId: isDone ? computedSupporterId : null,
+                        completedByUserId: isDone ? session.user.id : null,
+                    }
+                })
             }
+
+            await prisma.taskEvent.create({
+                data: {
+                    taskProgressId: progress.id,
+                    userId: session.user.id,
+                    action: isDone ? 'COMPLETED' : 'UNCOMPLETED',
+                }
+            })
+
+            revalidatePath('/')
+        } finally {
+            span.end()
         }
     })
-
-    let progress
-    if (existing) {
-        progress = await prisma.taskProgress.update({
-            where: { id: existing.id },
-            data: {
-                status: isDone ? 'DONE' : 'PENDING',
-                completedAt: isDone ? new Date() : null,
-                supportedByUserId: isDone ? computedSupporterId : null,
-                completedByUserId: isDone ? session.user.id : null,
-            }
-        })
-    } else {
-        progress = await prisma.taskProgress.create({
-            data: {
-                assignmentId,
-                taskDefinitionId,
-                status: isDone ? 'DONE' : 'PENDING',
-                completedAt: isDone ? new Date() : null,
-                supportedByUserId: isDone ? computedSupporterId : null,
-                completedByUserId: isDone ? session.user.id : null,
-            }
-        })
-    }
-
-    await prisma.taskEvent.create({
-        data: {
-            taskProgressId: progress.id,
-            userId: session.user.id,
-            action: isDone ? 'COMPLETED' : 'UNCOMPLETED',
-        }
-    })
-
-    revalidatePath('/')
 }
 
 // Phase 2: Edit actions
 export async function updateBucket(bucketId: string, title: string) {
-    const session = await auth()
-    if (!session?.user) throw new Error('Unauthorized')
+    return tracer.startActiveSpan('updateBucket', async (span) => {
+        try {
+            span.setAttribute('bucketId', bucketId);
+            const session = await getFastSession()
+            if (!session?.user) throw new Error('Unauthorized')
 
-    await prisma.bucket.update({
-        where: { id: bucketId },
-        data: { title }
+            await prisma.bucket.update({
+                where: { id: bucketId },
+                data: { title }
+            })
+            revalidatePath('/')
+        } finally {
+            span.end()
+        }
     })
-    revalidatePath('/')
 }
 
 export async function createTaskDefinition(bucketId: string, content: string) {
-    const session = await auth()
-    if (!session?.user) throw new Error('Unauthorized')
+    return tracer.startActiveSpan('createTaskDefinition', async (span) => {
+        try {
+            span.setAttribute('bucketId', bucketId);
+            const [session, lastTask] = await Promise.all([
+                getFastSession(),
+                prisma.taskDefinition.findFirst({
+                    where: { bucketId },
+                    orderBy: { order: 'desc' }
+                })
+            ])
 
-    // Get max order
-    const lastTask = await prisma.taskDefinition.findFirst({
-        where: { bucketId },
-        orderBy: { order: 'desc' }
-    })
-    const order = (lastTask?.order || 0) + 1
+            if (!session?.user) throw new Error('Unauthorized')
 
-    await prisma.taskDefinition.create({
-        data: {
-            bucketId,
-            content,
-            order
+            const order = (lastTask?.order || 0) + 1
+
+            await prisma.taskDefinition.create({
+                data: {
+                    bucketId,
+                    content,
+                    order
+                }
+            })
+            revalidatePath('/')
+        } finally {
+            span.end()
         }
     })
-    revalidatePath('/')
 }
 
 export async function updateTaskDefinition(taskId: string, content: string) {
-    const session = await auth()
+    const session = await getFastSession()
     if (!session?.user) throw new Error('Unauthorized')
 
     await prisma.taskDefinition.update({
@@ -314,23 +318,30 @@ export async function updateTaskDefinition(taskId: string, content: string) {
 }
 
 export async function deleteTaskDefinition(taskId: string) {
-    const session = await auth()
-    if (!session?.user) throw new Error('Unauthorized')
+    return tracer.startActiveSpan('deleteTaskDefinition', async (span) => {
+        try {
+            span.setAttribute('taskId', taskId);
+            const session = await getFastSession()
+            if (!session?.user) throw new Error('Unauthorized')
 
-    // Clean up valid progress first
-    await prisma.taskProgress.deleteMany({
-        where: { taskDefinitionId: taskId }
-    })
+            // Clean up valid progress first
+            await prisma.taskProgress.deleteMany({
+                where: { taskDefinitionId: taskId }
+            })
 
-    await prisma.taskDefinition.delete({
-        where: { id: taskId }
+            await prisma.taskDefinition.delete({
+                where: { id: taskId }
+            })
+            revalidatePath('/')
+        } finally {
+            span.end()
+        }
     })
-    revalidatePath('/')
 }
 
 // Phase 3: User Management
 export async function createUser(data: { name: string, email: string, password: string, role?: string }) {
-    const session = await auth()
+    const session = await getFastSession()
     if (!session?.user) throw new Error('Unauthorized')
 
     // Only admins can create users
@@ -352,7 +363,7 @@ export async function createUser(data: { name: string, email: string, password: 
 }
 
 export async function updateUser(id: string, name: string) {
-    const session = await auth()
+    const session = await getFastSession()
     if (!session?.user) throw new Error('Unauthorized')
 
     await prisma.user.update({
@@ -363,7 +374,7 @@ export async function updateUser(id: string, name: string) {
 }
 
 export async function deleteUser(id: string) {
-    const session = await auth()
+    const session = await getFastSession()
     if (!session?.user) throw new Error('Unauthorized')
 
     // Unassign pending assignments
@@ -385,7 +396,7 @@ export async function deleteUser(id: string) {
 }
 
 export async function getTaskHistory(taskDefinitionId: string) {
-    const session = await auth()
+    const session = await getFastSession()
     if (!session?.user) throw new Error('Unauthorized')
 
     return prisma.taskEvent.findMany({
@@ -405,91 +416,114 @@ export async function getTaskHistory(taskDefinitionId: string) {
 }
 
 export async function createBucket(title: string): Promise<void> {
-    const session = await auth()
-    if (!session?.user) throw new Error('Unauthorized')
+    return tracer.startActiveSpan('createBucket', async (span) => {
+        try {
+            span.setAttribute('title', title);
+            const [session, lastBucket] = await Promise.all([
+                getFastSession(),
+                prisma.bucket.findFirst({ orderBy: { order: 'desc' } })
+            ])
+            if (!session?.user) throw new Error('Unauthorized')
 
-    const lastBucket = await prisma.bucket.findFirst({ orderBy: { order: 'desc' } })
-    await prisma.bucket.create({
-        data: { title, order: (lastBucket?.order ?? 0) + 1, color: 'gray' }
+            await prisma.bucket.create({
+                data: { title, order: (lastBucket?.order ?? 0) + 1, color: 'gray' }
+            })
+            revalidatePath('/')
+        } finally {
+            span.end()
+        }
     })
-    revalidatePath('/')
 }
 
 export async function deleteBucket(bucketId: string): Promise<void> {
-    const session = await auth()
-    if (!session?.user) throw new Error('Unauthorized')
+    return tracer.startActiveSpan('deleteBucket', async (span) => {
+        try {
+            span.setAttribute('bucketId', bucketId);
+            const session = await getFastSession()
+            if (!session?.user) throw new Error('Unauthorized')
 
-    // Find or create an "Unassigned" bucket to receive orphaned tasks
-    let unassignedBucket = await prisma.bucket.findFirst({
-        where: { title: 'Unassigned', id: { not: bucketId } }
-    })
-    if (!unassignedBucket) {
-        const lastBucket = await prisma.bucket.findFirst({
-            where: { id: { not: bucketId } },
-            orderBy: { order: 'desc' }
-        })
-        unassignedBucket = await prisma.bucket.create({
-            data: { title: 'Unassigned', order: (lastBucket?.order ?? 0) + 1, color: 'gray' }
-        })
-    }
+            // Find or create an "Unassigned" bucket to receive orphaned tasks
+            let unassignedBucket = await prisma.bucket.findFirst({
+                where: { title: 'Unassigned', id: { not: bucketId } }
+            })
+            if (!unassignedBucket) {
+                const lastBucket = await prisma.bucket.findFirst({
+                    where: { id: { not: bucketId } },
+                    orderBy: { order: 'desc' }
+                })
+                unassignedBucket = await prisma.bucket.create({
+                    data: { title: 'Unassigned', order: (lastBucket?.order ?? 0) + 1, color: 'gray' }
+                })
+            }
 
-    // Clean up historical assignment data for this bucket
-    const assignments = await prisma.assignment.findMany({
-        where: { bucketId },
-        select: { id: true }
-    })
-    if (assignments.length > 0) {
-        const assignmentIds = assignments.map(a => a.id)
-        const progressRecords = await prisma.taskProgress.findMany({
-            where: { assignmentId: { in: assignmentIds } },
-            select: { id: true }
-        })
-        if (progressRecords.length > 0) {
-            const progressIds = progressRecords.map(p => p.id)
-            await prisma.taskEvent.deleteMany({ where: { taskProgressId: { in: progressIds } } })
-            await prisma.taskProgress.deleteMany({ where: { id: { in: progressIds } } })
+            // Clean up historical assignment data for this bucket
+            const assignments = await prisma.assignment.findMany({
+                where: { bucketId },
+                select: { id: true }
+            })
+            if (assignments.length > 0) {
+                const assignmentIds = assignments.map(a => a.id)
+                const progressRecords = await prisma.taskProgress.findMany({
+                    where: { assignmentId: { in: assignmentIds } },
+                    select: { id: true }
+                })
+                if (progressRecords.length > 0) {
+                    const progressIds = progressRecords.map(p => p.id)
+                    await prisma.taskEvent.deleteMany({ where: { taskProgressId: { in: progressIds } } })
+                    await prisma.taskProgress.deleteMany({ where: { id: { in: progressIds } } })
+                }
+                await prisma.assignment.deleteMany({ where: { bucketId } })
+            }
+
+            // Move task definitions to the Unassigned bucket
+            const lastTaskInTarget = await prisma.taskDefinition.findFirst({
+                where: { bucketId: unassignedBucket.id },
+                orderBy: { order: 'desc' }
+            })
+            const tasksToMove = await prisma.taskDefinition.findMany({
+                where: { bucketId },
+                orderBy: { order: 'asc' }
+            })
+            let nextOrder = (lastTaskInTarget?.order ?? 0) + 1
+            for (const task of tasksToMove) {
+                await prisma.taskDefinition.update({
+                    where: { id: task.id },
+                    data: { bucketId: unassignedBucket.id, order: nextOrder++ }
+                })
+            }
+
+            await prisma.bucket.delete({ where: { id: bucketId } })
+            revalidatePath('/')
+        } finally {
+            span.end()
         }
-        await prisma.assignment.deleteMany({ where: { bucketId } })
-    }
-
-    // Move task definitions to the Unassigned bucket
-    const lastTaskInTarget = await prisma.taskDefinition.findFirst({
-        where: { bucketId: unassignedBucket.id },
-        orderBy: { order: 'desc' }
     })
-    const tasksToMove = await prisma.taskDefinition.findMany({
-        where: { bucketId },
-        orderBy: { order: 'asc' }
-    })
-    let nextOrder = (lastTaskInTarget?.order ?? 0) + 1
-    for (const task of tasksToMove) {
-        await prisma.taskDefinition.update({
-            where: { id: task.id },
-            data: { bucketId: unassignedBucket.id, order: nextOrder++ }
-        })
-    }
-
-    await prisma.bucket.delete({ where: { id: bucketId } })
-    revalidatePath('/')
 }
 
 export async function reorderTasks(bucketId: string, taskIds: string[]): Promise<void> {
-    const session = await auth()
-    if (!session?.user) throw new Error('Unauthorized')
+    return tracer.startActiveSpan('reorderTasks', async (span) => {
+        try {
+            span.setAttribute('bucketId', bucketId);
+            const session = await getFastSession()
+            if (!session?.user) throw new Error('Unauthorized')
 
-    await prisma.$transaction(
-        taskIds.map((id, index) =>
-            prisma.taskDefinition.update({
-                where: { id },
-                data: { order: index + 1 }
-            })
-        )
-    )
-    revalidatePath('/')
+            await prisma.$transaction(
+                taskIds.map((id, index) =>
+                    prisma.taskDefinition.update({
+                        where: { id },
+                        data: { order: index + 1 }
+                    })
+                )
+            )
+            revalidatePath('/')
+        } finally {
+            span.end()
+        }
+    })
 }
 
 export async function getDatesWithData(): Promise<string[]> {
-    const session = await auth()
+    const session = await getFastSession()
     if (!session?.user) throw new Error('Unauthorized')
 
     const logs = await prisma.dailyLog.findMany({
@@ -551,36 +585,40 @@ type DailyReportData = {
 }
 
 export async function getDailyReport(date: string): Promise<DailyReportData> {
-    const session = await auth()
-    if (!session?.user) throw new Error('Unauthorized')
-    if (session.user.role !== 'ADMIN') throw new Error('Forbidden')
-
-    const dailyLog = await prisma.dailyLog.findUnique({
-        where: { date },
-    })
-
-    const buckets = await prisma.bucket.findMany({
-        orderBy: { order: 'asc' },
-        include: {
-            tasks: { orderBy: { order: 'asc' } },
-        },
-    })
-
-    const dbAssignments = dailyLog
-        ? await prisma.assignment.findMany({
-            where: { dailyLogId: dailyLog.id },
-            include: {
-                user: true,
-                bucket: true,
-                taskProgress: {
+    return tracer.startActiveSpan('getDailyReport', async (span) => {
+        try {
+            span.setAttribute('date', date);
+            const [session, dailyLog, buckets] = await Promise.all([
+                getFastSession(),
+                prisma.dailyLog.findUnique({
+                    where: { date },
+                }),
+                prisma.bucket.findMany({
+                    orderBy: { order: 'asc' },
                     include: {
-                        completedBy: { select: { id: true, name: true } },
-                        supportedBy: { select: { id: true, name: true } },
+                        tasks: { orderBy: { order: 'asc' } },
                     },
-                },
-            },
-        })
-        : []
+                })
+            ])
+
+            if (!session?.user) throw new Error('Unauthorized')
+            if (session.user.role !== 'ADMIN') throw new Error('Forbidden')
+
+            const dbAssignments = dailyLog
+                ? await prisma.assignment.findMany({
+                    where: { dailyLogId: dailyLog.id },
+                    include: {
+                        user: true,
+                        bucket: true,
+                        taskProgress: {
+                            include: {
+                                completedBy: { select: { id: true, name: true } },
+                                supportedBy: { select: { id: true, name: true } },
+                            },
+                        },
+                    },
+                })
+                : []
 
     // Build assignments array (only assigned ones)
     const assignedBucketIds = new Set<string>()
@@ -668,18 +706,22 @@ export async function getDailyReport(date: string): Promise<DailyReportData> {
     const outstandingTasks = totalTasks - completedTasks
     const completionPercent = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 1000) / 10 : 0
 
-    return {
-        date,
-        summary: {
-            totalBuckets,
-            assignedBuckets: assignedBucketsCount,
-            unassignedBuckets: totalBuckets - assignedBucketsCount,
-            totalTasks,
-            completedTasks,
-            outstandingTasks,
-            completionPercent,
-        },
-        assignments,
-        unassignedBuckets,
-    }
+            return {
+                date,
+                summary: {
+                    totalBuckets,
+                    assignedBuckets: assignedBucketsCount,
+                    unassignedBuckets: totalBuckets - assignedBucketsCount,
+                    totalTasks,
+                    completedTasks,
+                    outstandingTasks,
+                    completionPercent,
+                },
+                assignments,
+                unassignedBuckets,
+            }
+        } finally {
+            span.end()
+        }
+    })
 }
