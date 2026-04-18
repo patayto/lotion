@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { getFastSession } from '@/lib/fast-auth'
 import * as jose from 'jose'
+import { hkdf } from '@panva/hkdf'
 
 // Mock next/headers
 vi.mock('next/headers', () => ({
@@ -12,10 +13,14 @@ vi.mock('jose', async () => {
     const actual = await vi.importActual('jose')
     return {
         ...actual,
-        hkdf: vi.fn(),
         jwtDecrypt: vi.fn(),
     }
 })
+
+// Mock @panva/hkdf
+vi.mock('@panva/hkdf', () => ({
+    hkdf: vi.fn(),
+}))
 
 describe('getFastSession', () => {
   const mockSecret = 'test-secret-32-chars-long-at-least!!'
@@ -45,7 +50,7 @@ describe('getFastSession', () => {
     })
 
     // Mock jose.hkdf to return a dummy key
-    ;(jose.hkdf as any).mockResolvedValue(new Uint8Array(32))
+    ;(hkdf as any).mockResolvedValue(new Uint8Array(32))
     
     // Mock jose.jwtDecrypt to return a valid payload
     ;(jose.jwtDecrypt as any).mockResolvedValue({
@@ -71,7 +76,7 @@ describe('getFastSession', () => {
       get: vi.fn().mockReturnValue({ value: 'invalid-token' })
     })
 
-    ;(jose.hkdf as any).mockResolvedValue(new Uint8Array(32))
+    ;(hkdf as any).mockResolvedValue(new Uint8Array(32))
     ;(jose.jwtDecrypt as any).mockRejectedValue(new Error('Decryption failed'))
 
     const session = await getFastSession()

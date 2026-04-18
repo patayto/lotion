@@ -1,5 +1,6 @@
 import { cookies } from 'next/headers'
 import * as jose from 'jose'
+import { hkdf } from '@panva/hkdf'
 
 /**
  * A lightweight session verification utility that bypasses the full NextAuth stack.
@@ -27,7 +28,7 @@ export async function getFastSession() {
         // NextAuth v5 uses HKDF to derive the encryption key from AUTH_SECRET
         const salt = ''
         const info = 'NextAuth.js Generated Encryption Key'
-        const key = await jose.hkdf(
+        const key = await hkdf(
             'sha256',
             secret,
             salt,
